@@ -1,2 +1,2 @@
 # fullstackopen
-Exercises for the full Stack Open bootcamp by the university of Helsinki
+Exercises for Full Stack Open, a bootcamp by the university of Helsinki
