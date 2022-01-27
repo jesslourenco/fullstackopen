@@ -2,7 +2,8 @@
 
 # Full Stack Open
 
-1/14 parts completed 
+1/14 parts completed
+
 ![7%](https://progress-bar.dev/7/?title=progress)
 
 ## Abstract
