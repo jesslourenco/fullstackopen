@@ -14,4 +14,7 @@ end note
 
 
 browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
-server-->browser: status code 201
+server-->browser: status code 201; response {"message":"note created"}
+
+
+
