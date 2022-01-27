@@ -1,0 +1,20 @@
+note over browser: 
+user types in text field
+and clicks the "save" button
+end note 
+
+note over browser: 
+browser executes event handler to handle the form submit event,
+where the function, in summary:
+- creates a new note
+- adds it to the notes list
+- rerenders the page to show the updated notes list (no GET request!)
+- sends the new note to the server.
+end note 
+
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: status code 201; response {"message":"note created"}
+
+
+
