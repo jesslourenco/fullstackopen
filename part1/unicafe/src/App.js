@@ -5,8 +5,8 @@ const Button = ({ handleClick, feedback }) => (<button onClick={handleClick}>{fe
 const Statistics = ({good, neutral, bad}) =>{
 
   const sum =  good + neutral + bad
-  const average = (good - bad) / sum()
-  const positive = (good / sum()) * 100
+  const average = (good - bad) / sum
+  const positive = (good / sum) * 100
   
   if (sum > 0) {
     return (
