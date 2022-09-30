@@ -4,20 +4,20 @@ const Button = ({ handleClick, feedback }) => (<button onClick={handleClick}>{fe
 
 const Statistics = ({good, neutral, bad}) =>{
 
-  const sum = () => (good + neutral + bad)
-  const average = () => ((good - bad) / sum())
-  const positive = () => ((good / sum()) * 100)
+  const sum =  good + neutral + bad
+  const average = (good - bad) / sum()
+  const positive = (good / sum()) * 100
   
-  if (sum() > 0) {
+  if (sum > 0) {
     return (
       <table>
         <tbody>
           <StatisticLine calc="good" total={good}/>
           <StatisticLine calc="neutral" total={neutral}/>
           <StatisticLine calc="bad" total={bad}/>
-          <StatisticLine calc="all" total={sum()}/>
-          <StatisticLine calc="average" total={average().toFixed(1)}/>
-          <StatisticLine calc="positive" total={positive().toFixed(1)} percentage={true}/>
+          <StatisticLine calc="all" total={sum}/>
+          <StatisticLine calc="average" total={average.toFixed(1)}/>
+          <StatisticLine calc="positive" total={positive.toFixed(1)} percentage={true}/>
           </tbody>
       </table>
 
