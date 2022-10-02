@@ -19,13 +19,13 @@ https://fullstackopen.com/en/about/
   - General info
   - Fundamentals of Web apps
   
-### :pencil2: Part 1: Introduction to React
+### :white_check_mark: [Part 1: Introduction to React](https://github.com/jesslourenco/fullstackopen/tree/main/part1)
   - Introduction to React
   - Javascript
   - Component state, event handlers
   - A more complex state, debugging React apps
   
-### Part 2: Communicating with server
+### :pencil2: Part 2: Communicating with server
   - Rendering a collection, modules
   - Forms
   - Getting data from server
