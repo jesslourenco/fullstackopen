@@ -1,10 +1,9 @@
 import React from 'react'
 
-
 const Content = ({topic, exercises}) =>{
   return(
     <p>
-      {topic}{exercises}
+      {topic}&nbsp;{exercises}
     </p>
     )
  }

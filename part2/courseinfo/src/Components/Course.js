@@ -5,15 +5,6 @@ import Total from './Total'
 
 const Course = ({courses}) =>{
 
-    const courseTitles = courses.map(course => course.name)
-    const courseParts = courses.reduce((acc, course) => [...acc, ...course.parts], [])  
-    //const exercises = courseParts.map(e => e.exercises).reduce((x, item) => x + item, 0)
-    
-    //console.log(course)
-    //console.log(exercises)
-
-   
-
     return (
     <div>
         <h1>Web Development Curriculum</h1>
@@ -23,13 +14,16 @@ const Course = ({courses}) =>{
                     {course.parts.map(part => 
                         <Content key={part.id} topic={part.name} exercises={part.exercises} />
                     )}
+                    <Total total={course.parts
+                        .map(e => e.exercises)
+                        .reduce((total, item) => 
+                            total + item, 0)}  
+                    />
                 </div>
-            )}
+            )
+            }
             
     </div>
     )
 }
-
-/*<Content parts={course.parts} />
-            <Total exercises={exercises} /> */
 export default Course
