@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     axios
       .get('http://localhost:3001/persons')
-      .then(response =>{
+      .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
       })
@@ -30,49 +30,66 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if(persons.flatMap(e => e.name.toLowerCase()).includes(newName)){
+    if (persons.flatMap(e => e.name.toLowerCase()).includes(newName)) {
       alert(`${newName} already exists in phonebook`)
-      return(setNewName(''), setNewNum(''))
+      return (setNewName(''), setNewNum(''))
     }
 
-    const person = { name : newName, number : newNum }
+    const person = { name: newName, number: newNum }
 
     axios
       .post('http://localhost:3001/persons', person)
       .then(response => {
-        setPersons(persons.concat(person))
+        setPersons(persons.concat(response.data))
         setNewName('')
         setNewNum('')
-      })  
+      })
   }
+
+  console.log('persons', persons)
 
   const handleSearch = (event) => {
     event.preventDefault()
     setFilter(event.target.value)
-   }
+  }
 
-  const display = filter 
-  ? persons.filter(person => 
-                    person.name
-                    .toLowerCase()
-                    .includes(filter)) 
-  : persons
+  const display = filter
+    ? persons.filter(person =>
+      person.name
+        .toLowerCase()
+        .includes(filter))
+    : persons
+
+  const handleDelete = (event, id, name) => {
+    event.preventDefault()
+    if (window.confirm(`delete ${name}?`))
+    axios
+      .delete(`http://localhost:3001/persons/${id}`)
+      .then(response => {
+        console.log(`${id} was deleted from phonebook`)
+        axios
+          .get(`http://localhost:3001/persons`)
+          .then(response => {
+            setPersons(response.data)
+          })
+      })
+  }
 
   return (
     <div>
       <h2>Phonebook</h2>
-        <PersonForm addPerson={addPerson} 
-                    newName={newName} 
-                    handleAddName={handleAddName} 
-                    newNum={newNum} 
-                    handleAddNum={handleAddNum}
-        />
-        
+      <PersonForm addPerson={addPerson}
+        newName={newName}
+        handleAddName={handleAddName}
+        newNum={newNum}
+        handleAddNum={handleAddNum}
+      />
+
       <h2>Find</h2>
-        <Filter handleSearch={handleSearch}/>
+      <Filter handleSearch={handleSearch} />
 
       <h2>Numbers</h2>
-        <People phonebook={display} />     
+      <People phonebook={display} handleDelete={handleDelete} />
     </div>
   )
 }

@@ -1,8 +1,12 @@
 import React from 'react'
+import axios from 'axios'
+import People from './People'
 
-const Person = ({name, number}) => {
+const Person = ({name, number, id, handleDelete}) => {
     return(
-    <li> {name} {number} </li>
+    <div> {name} {number} 
+        <button onClick={event => handleDelete(event, id, name)} >delete</button>
+    </div>
     )
 }
 
