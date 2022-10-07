@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import People from './components/People'
 import Filter from './components/Filter'
-import axios from 'axios'
+import phonebook from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,11 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState()
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+      phonebook
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(response)
       })
   }, [])
 
@@ -30,23 +29,35 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.flatMap(e => e.name.toLowerCase()).includes(newName)) {
-      alert(`${newName} already exists in phonebook`)
-      return (setNewName(''), setNewNum(''))
-    }
+    if (persons.find(e => e.name.toLowerCase() === newName.toLowerCase())) {
+      if (window.confirm(`Replace phone number for ${newName}?`)){
+        const person = persons.find(e => e.name === newName)
+        const updated = {...person, number: newNum}
 
-    const person = { name: newName, number: newNum }
+        phonebook
+          .update(person.id, updated)
+          .then(response => {
+            setPersons(persons.map(p => p.id !== person.id ? p : response))
+            setNewName('')
+            setNewNum('')
+          })
+          .catch(error => {
+            console.log('failure to update')
+          })
+      }
+    }else{
 
-    axios
-      .post('http://localhost:3001/persons', person)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNum('')
-      })
+      const person = { name: newName, number: newNum }
+
+      phonebook
+        .create(person)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName('')
+          setNewNum('')
+        })
+      }
   }
-
-  console.log('persons', persons)
 
   const handleSearch = (event) => {
     event.preventDefault()
@@ -63,16 +74,11 @@ const App = () => {
   const handleDelete = (event, id, name) => {
     event.preventDefault()
     if (window.confirm(`delete ${name}?`))
-    axios
-      .delete(`http://localhost:3001/persons/${id}`)
-      .then(response => {
-        console.log(`${id} was deleted from phonebook`)
-        axios
-          .get(`http://localhost:3001/persons`)
-          .then(response => {
-            setPersons(response.data)
-          })
-      })
+      phonebook
+        .destroy(id)
+        .then(response => {
+            setPersons(response)
+        })
   }
 
   return (
