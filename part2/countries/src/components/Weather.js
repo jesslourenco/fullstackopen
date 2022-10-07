@@ -1,10 +1,7 @@
 import React from 'react'
 
-const Search = ({temp, wind, icon}) => {
+const Weather= ({temp, wind, icon}) => {
     const url = `http://openweathermap.org/img/wn/${icon}@2x.png`
-    console.log(temp)
-    console.log(wind)
-    console.log(icon)
 
     return(
         <div>
@@ -17,4 +14,4 @@ const Search = ({temp, wind, icon}) => {
     )
 }
 
-export default Search
+export default Weather

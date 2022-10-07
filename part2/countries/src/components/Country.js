@@ -48,16 +48,10 @@ const Country = ({ name, capital, area, languages, flag, code }) => {
             </ul>
             <img src={flag} alt='the flag of the country'></img>
             <h2>Weather in {capital}</h2>
-            <div>
-                    Temperature: {weather.main.temp} C <br></br>
-                    Wind: {weather.wind.speed} m/s
-                <div>
-                    <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt='weather icon'></img>
-                </div>
-            </div>
+            <Weather temp={weather.main.temp} wind={weather.wind.speed} icon={weather.weather[0].icon}/>
         </div>
     )
 }
 
 export default Country
-//  <Weather temp={weather.main.temp} wind={weather.wind.speed} icon={weather.weather[0].icon}/>
+//  
