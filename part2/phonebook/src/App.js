@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import People from './components/People'
 import Filter from './components/Filter'
-import axios from 'axios'
+import phonebook from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,11 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState()
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response =>{
-        console.log('promise fulfilled')
-        setPersons(response.data)
+      phonebook
+      .getAll()
+      .then(response => {
+        setPersons(response)
       })
   }, [])
 
@@ -30,45 +29,73 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if(persons.flatMap(e => e.name.toLowerCase()).includes(newName)){
-      alert(`${newName} already exists in phonebook`)
-      return(setNewName(''), setNewNum(''))
-    }
+    if (persons.find(e => e.name.toLowerCase() === newName.toLowerCase())) {
+      if (window.confirm(`Replace phone number for ${newName}?`)){
+        const person = persons.find(e => e.name === newName)
+        const updated = {...person, number: newNum}
 
-    const person = { name : newName, number : newNum }
+        phonebook
+          .update(person.id, updated)
+          .then(response => {
+            setPersons(persons.map(p => p.id !== person.id ? p : response))
+            setNewName('')
+            setNewNum('')
+          })
+          .catch(error => {
+            console.log('failure to update')
+          })
+      }
+    }else{
 
-    setPersons(persons.concat(person))
-    setNewName('')
-    setNewNum('')
+      const person = { name: newName, number: newNum }
+
+      phonebook
+        .create(person)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName('')
+          setNewNum('')
+        })
+      }
   }
 
   const handleSearch = (event) => {
     event.preventDefault()
     setFilter(event.target.value)
-   }
+  }
 
-  const display = filter 
-  ? persons.filter(person => 
-                    person.name
-                    .toLowerCase()
-                    .includes(filter)) 
-  : persons
+  const display = filter
+    ? persons.filter(person =>
+      person.name
+        .toLowerCase()
+        .includes(filter))
+    : persons
+
+  const handleDelete = (event, id, name) => {
+    event.preventDefault()
+    if (window.confirm(`delete ${name}?`))
+      phonebook
+        .destroy(id)
+        .then(response => {
+            setPersons(response)
+        })
+  }
 
   return (
     <div>
       <h2>Phonebook</h2>
-        <PersonForm addPerson={addPerson} 
-                    newName={newName} 
-                    handleAddName={handleAddName} 
-                    newNum={newNum} 
-                    handleAddNum={handleAddNum}
-        />
-        
+      <PersonForm addPerson={addPerson}
+        newName={newName}
+        handleAddName={handleAddName}
+        newNum={newNum}
+        handleAddNum={handleAddNum}
+      />
+
       <h2>Find</h2>
-        <Filter handleSearch={handleSearch}/>
+      <Filter handleSearch={handleSearch} />
 
       <h2>Numbers</h2>
-        <People phonebook={display} />     
+      <People phonebook={display} handleDelete={handleDelete} />
     </div>
   )
 }
