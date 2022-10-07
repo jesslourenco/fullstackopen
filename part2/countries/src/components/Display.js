@@ -1,32 +1,41 @@
 import React from 'react'
 import Country from './Country'
 
-const Display = ({countries}) => {
-    
+const Display = ({filteredCountries, setFilter}) => {
 
-    if(countries.length > 10 ){
+    const handleClick = (event, e) => {
+        console.log('setting new filter to ', e)
+        setFilter([e])
+    }
+
+    if(!filteredCountries){return(null)}
+            
+    if(filteredCountries.length > 10 ){
         return(
             <>Too many matches, specify another filter</>
         )
     }
 
-    if(countries.length >1 && countries.length < 10){
+    if(filteredCountries.length >1 && filteredCountries.length < 10){
         return(
             <>
-                {countries.map(e => 
-                    <div key={e.altSpellings[0]}>{e.name.official}</div>
-                    )}
+                {filteredCountries.map(e => 
+                <div key={e.name.official}>
+                    {e.name.official}
+                    <button onClick={event => handleClick(event, e)}>show</button>
+                </div>)}
             </>
         )
     }
-   if(countries.length === 1){
+   if(filteredCountries.length === 1){
         return(
             <>
-                <Country name={countries[0].name.official} 
-                        capital={countries[0].capital} 
-                        area={countries[0].area} 
-                        languages={countries[0].languages} 
-                        flag={countries[0].flags.png}
+                <Country name={filteredCountries[0].name.official} 
+                        capital={filteredCountries[0].capital} 
+                        area={filteredCountries[0].area} 
+                        languages={filteredCountries[0].languages} 
+                        flag={filteredCountries[0].flags.png}
+                        code={filteredCountries[0].cca3}
                 />
             </>
         )
