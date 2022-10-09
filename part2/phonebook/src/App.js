@@ -3,12 +3,14 @@ import PersonForm from './components/PersonForm'
 import People from './components/People'
 import Filter from './components/Filter'
 import phonebook from './services/phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
   const [filter, setFilter] = useState()
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
       phonebook
@@ -38,11 +40,14 @@ const App = () => {
           .update(person.id, updated)
           .then(response => {
             setPersons(persons.map(p => p.id !== person.id ? p : response))
+            setMessage([`${person.name} has been updated!`, 'success'])
             setNewName('')
             setNewNum('')
           })
           .catch(error => {
-            console.log('failure to update')
+            setMessage([`${person.name} has already been removed from server. Please refresh page`, 'error'])
+            setNewName('')
+            setNewNum('')
           })
       }
     }else{
@@ -53,6 +58,7 @@ const App = () => {
         .create(person)
         .then(response => {
           setPersons(persons.concat(response))
+          setMessage([`${person.name} has been added to phonebook!`, 'success'])
           setNewName('')
           setNewNum('')
         })
@@ -83,6 +89,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message}/>
       <h2>Phonebook</h2>
       <PersonForm addPerson={addPerson}
         newName={newName}
