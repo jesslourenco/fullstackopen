@@ -2,9 +2,9 @@
 
 # Full Stack Open
 
-1/14 parts completed
+3/14 parts completed
 
-![14%](https://progress-bar.dev/14/?title=progress&width=500)
+![21%](https://progress-bar.dev/14/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -25,14 +25,14 @@ https://fullstackopen.com/en/about/
   - Component state, event handlers
   - A more complex state, debugging React apps
   
-### :pencil2: Part 2: Communicating with server
+### :white_check_mark: [Communicating with server](https://github.com/jesslourenco/fullstackopen/tree/main/part2)
   - Rendering a collection, modules
   - Forms
   - Getting data from server
   - Altering data in server
   - Adding styles to React app
   
-### Part 3: Programming a server with NodeJS and Express
+### :pencil2: Part 3: Programming a server with NodeJS and Express
   - Node.js and Express
   - Deploying app to internet
   - Saving data to MongoDB
