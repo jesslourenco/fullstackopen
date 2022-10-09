@@ -4,7 +4,7 @@
 
 3/14 parts completed
 
-![21%](https://progress-bar.dev/14/?title=progress&width=500)
+![21%](https://progress-bar.dev/21/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
