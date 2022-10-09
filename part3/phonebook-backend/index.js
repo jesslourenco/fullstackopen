@@ -81,6 +81,12 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
+  if (persons.find(p => p.name === body.name)){
+    return response.status(409).json({ 
+      error: 'name must be unique' 
+    })
+  }
+
   const generateId = () => {
     return Math.floor(Math.random() * 100000)
   }
@@ -95,9 +101,6 @@ app.post('/api/persons', (request, response) => {
 
   response.json(person)
 })
-
-
-
 
 const PORT = 3001
 app.listen(PORT, () => {
