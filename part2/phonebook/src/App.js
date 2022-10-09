@@ -40,12 +40,14 @@ const App = () => {
           .update(person.id, updated)
           .then(response => {
             setPersons(persons.map(p => p.id !== person.id ? p : response))
-            setMessage(`${person.name} has been updated!`)
+            setMessage([`${person.name} has been updated!`, 'success'])
             setNewName('')
             setNewNum('')
           })
           .catch(error => {
-            console.log('failure to update')
+            setMessage([`${person.name} has already been removed from server. Please refresh page`, 'error'])
+            setNewName('')
+            setNewNum('')
           })
       }
     }else{
@@ -56,7 +58,7 @@ const App = () => {
         .create(person)
         .then(response => {
           setPersons(persons.concat(response))
-          setMessage(`${person.name} has been added to phonebook!`)
+          setMessage([`${person.name} has been added to phonebook!`, 'success'])
           setNewName('')
           setNewNum('')
         })
