@@ -1,4 +1,4 @@
-const Notification = ({ message }) => {
+const Notification = ({ message, setMessage }) => {
 
     if (message === null) return null
 
@@ -25,6 +25,10 @@ const Notification = ({ message }) => {
             fontSize: 20
         }
     }
+    setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+
     return (
         <div style={divStyle}>
             {message[0]}

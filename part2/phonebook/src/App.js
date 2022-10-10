@@ -13,11 +13,12 @@ const App = () => {
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
-      phonebook
+    phonebook
       .getAll()
       .then(response => {
         setPersons(response)
       })
+    
   }, [])
 
   const handleAddName = (event) => {
@@ -32,9 +33,9 @@ const App = () => {
     event.preventDefault()
 
     if (persons.find(e => e.name.toLowerCase() === newName.toLowerCase())) {
-      if (window.confirm(`Replace phone number for ${newName}?`)){
+      if (window.confirm(`Replace phone number for ${newName}?`)) {
         const person = persons.find(e => e.name === newName)
-        const updated = {...person, number: newNum}
+        const updated = { ...person, number: newNum }
 
         phonebook
           .update(person.id, updated)
@@ -50,7 +51,7 @@ const App = () => {
             setNewNum('')
           })
       }
-    }else{
+    } else {
 
       const person = { name: newName, number: newNum }
 
@@ -62,7 +63,7 @@ const App = () => {
           setNewName('')
           setNewNum('')
         })
-      }
+    }
   }
 
   const handleSearch = (event) => {
@@ -83,13 +84,13 @@ const App = () => {
       phonebook
         .destroy(id)
         .then(response => {
-            setPersons(response)
+          setPersons(response)
         })
   }
 
   return (
     <div>
-      <Notification message={message}/>
+      <Notification message={message} setMessage={setMessage}/>
       <h2>Phonebook</h2>
       <PersonForm addPerson={addPerson}
         newName={newName}
