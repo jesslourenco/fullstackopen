@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
@@ -14,29 +15,6 @@ morgan.token('body', (req) => {
   })
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
-
-let persons = [
-  {
-    "id": 1,
-    "name": "Arto Hellas",
-    "number": "040-123456"
-  },
-  {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523"
-  },
-  {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345"
-  },
-  {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122"
-  }
-]
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -97,26 +75,17 @@ app.post('/api/persons', (request, response) => {
       error: 'content missing' 
     })
   }
+  
+  const person = new Person({
+      name: body.name,
+      number: body.number
+  })
 
-  if (persons.find(p => p.name === body.name)){
-    return response.status(409).json({ 
-      error: 'name must be unique' 
-    })
-  }
-
-  const generateId = () => {
-    return Math.floor(Math.random() * 100000)
-  }
-
-  const person = {
-    id: generateId(),
-    name: body.name,
-    number: body.number
-  }
-
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save()
+  .then(person => {
+    response.json(person)
+  })
+  .catch((err) => console.log(err))
 })
 
 const PORT = process.env.PORT || 3001
