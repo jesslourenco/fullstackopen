@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const Person = require('./models/person')
 
 app.use(cors())
 app.use(express.static('build'))
@@ -42,8 +43,11 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
+
 
 app.get('/info', (request, response) => {
   const info = {
