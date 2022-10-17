@@ -88,13 +88,24 @@ app.post('/api/persons', (request, response) => {
   .catch((err) => console.log(err))
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const update = { number: body.number }
+
+  Person.findByIdAndUpdate(request.params.id, update, { new: true })
+  .then(updatedPerson => {
+    response.json(updatedPerson)
+  })
+  .catch(error => next(error))
+})
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } 
-
   next(error)
 }
 
