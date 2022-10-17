@@ -1,5 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator');
 const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
@@ -15,10 +16,23 @@ mongoose.connect(url)
 const personSchema = new mongoose.Schema({
     name: {
       type: String,
-      minLength: 3
+      minLength: 3,
+      required: true,
+      unique: true
     },
-    number: String
+    number: {
+      type: String,
+      minLength: 8,
+      validate : {
+        validator: str => {
+          return /^\d{2,3}[-]\d+$/.test(str)
+        },
+        message: "Phone number must follow format xxx-xxxxx and be all numbers"
+      }
+    }
 })
+
+personSchema.plugin(uniqueValidator)
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {

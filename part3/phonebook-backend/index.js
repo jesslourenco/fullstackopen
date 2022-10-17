@@ -79,7 +79,7 @@ app.post('/api/persons', (request, response, next) => {
       error: 'content missing' 
     })
   }
-  
+
   const person = new Person({
       name: body.name,
       number: body.number
@@ -97,7 +97,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   const update = { number: body.number }
 
-  Person.findByIdAndUpdate(request.params.id, update, { new: true })
+  Person.findByIdAndUpdate(request.params.id, update, { new: true, runValidators: true, context: 'query' })
   .then(updatedPerson => {
     response.json(updatedPerson)
   })
