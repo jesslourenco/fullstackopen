@@ -1,3 +1,4 @@
+/// ---------------------------------- This file is not used. Just a sample of a console mongo ----------------------------------- ///
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
