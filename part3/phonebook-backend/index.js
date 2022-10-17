@@ -21,34 +21,38 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
+  Person.find({})
+  .then(persons => {
     response.json(persons)
   })
 })
 
 
 app.get('/info', (request, response) => {
-  const info = {
-    date: new Date(),
-    numRecords: persons.length
-  }
-  response.send(
-    `<div> Phonebook has info for ${info.numRecords} people
-            <br>
-            ${info.date}
-        </div>`
-  )
+
+  Person.count({})
+   .then( result => {
+    const info = {
+      date: new Date(),
+      numRecords: result
+    }
+
+    response.send(
+      `<div> Phonebook has info for ${info.numRecords} people
+              <br>
+              ${info.date}
+          </div>`
+    )
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(p => p.id === id)
-
-  if (person) {
+  Person.findById(request.params.id)
+  .then(person => {
     response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  })
+  .catch(error => next(error))
+
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
