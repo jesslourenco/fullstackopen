@@ -2,9 +2,9 @@
 
 # Full Stack Open
 
-3/14 parts completed
+4/14 parts completed
 
-![21%](https://progress-bar.dev/21/?title=progress&width=500)
+![29%](https://progress-bar.dev/29/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -32,13 +32,13 @@ https://fullstackopen.com/en/about/
   - Altering data in server
   - Adding styles to React app
   
-### :pencil2: Part 3: Programming a server with NodeJS and Express
+### :white_check_mark: [Part 3: Programming a server with NodeJS and Express](https://github.com/jesslourenco/fullstackopen/tree/main/part3/phonebook-backend)
   - Node.js and Express
   - Deploying app to internet
   - Saving data to MongoDB
   - Validation and ESLint
   
-### Part 4: Testing Express servers, user administration
+### :pencil2: Part 4: Testing Express servers, user administration
   - Structure of backend application, introduction to testing
   - Testing the backend
   - User administration
