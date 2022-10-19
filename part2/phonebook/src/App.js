@@ -46,7 +46,7 @@ const App = () => {
             setNewNum('')
           })
           .catch(error => {
-            setMessage([`${person.name} has already been removed from server. Please refresh page`, 'error'])
+            setMessage([`${error.response.data.error}`, 'error'])
             setNewName('')
             setNewNum('')
           })
@@ -60,6 +60,12 @@ const App = () => {
         .then(response => {
           setPersons(persons.concat(response))
           setMessage([`${person.name} has been added to phonebook!`, 'success'])
+          setNewName('')
+          setNewNum('')
+        })
+        .catch(error => {
+          setMessage([`${error.response.data.error}`, 'error'])
+          console.log(error.response.data.error)
           setNewName('')
           setNewNum('')
         })
