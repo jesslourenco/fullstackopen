@@ -25,9 +25,23 @@ const mostBlogs = (blogs) => {
       .toJSON());
 };
 
+const mostLikes = (blogs) => {
+  if (!blogs.length) return 'Array is empty';
+
+  return (
+    _
+      .chain(blogs)
+      .groupBy('author')
+      .map((author) => author.reduce((acc, e) => ({ author: e.author, likes: acc.likes + e.likes }), { author: '', likes: 0 }))
+      .sortBy('likes')
+      .last()
+      .toJSON());
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
