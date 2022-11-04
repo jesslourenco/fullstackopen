@@ -1,5 +1,6 @@
-const express = require('express');
 const mongoose = require('mongoose');
+const express = require('express');
+require('express-async-errors');
 
 const app = express();
 const cors = require('cors');
@@ -7,7 +8,7 @@ const morgan = require('morgan');
 
 const config = require('./utils/config');
 const postsRouter = require('./controllers/posts');
-// const middleware = require('./utils/middleware')
+const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 
 morgan.token('body', (req) => (req.method === 'POST' ? JSON.stringify(req.body) : ''));
@@ -30,6 +31,6 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 app.use('/api/posts', postsRouter);
 
 // app.use(middleware.unknownEndpoint)
-// app.use(middleware.errorHandler)
+app.use(middleware.errorHandler);
 
 module.exports = app;

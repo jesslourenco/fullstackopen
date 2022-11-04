@@ -118,6 +118,30 @@ test('Default value of likes is zero', async () => {
   expect(response.body.likes).toBe(0);
 });
 
+test('New post req with missing title returns 400', async () => {
+  const newPost = {
+    author: 'a test author',
+    url: 'https://atesturl.com',
+  };
+
+  await api
+    .post('/api/posts')
+    .send(newPost)
+    .expect(400);
+});
+
+test('New post req with missing url returns 400', async () => {
+  const newPost = {
+    title: 'a test title',
+    author: 'a test author',
+  };
+
+  await api
+    .post('/api/posts')
+    .send(newPost)
+    .expect(400);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
