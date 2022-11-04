@@ -106,6 +106,18 @@ test('POST creates new post', async () => {
   expect(response.body).toHaveLength(7);
 });
 
+test('Default value of likes is zero', async () => {
+  const newPost = {
+    title: 'a test title',
+    author: 'a test author',
+    url: 'https://atesturl.com',
+  };
+
+  const response = await api.post('/api/posts').send(newPost);
+  expect(response.status).toBe(201);
+  expect(response.body.likes).toBe(0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
