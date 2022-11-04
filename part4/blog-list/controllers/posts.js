@@ -1,22 +1,15 @@
 const postsRouter = require('express').Router();
 const Post = require('../models/post');
 
-postsRouter.get('/', (request, response) => {
-  Post
-    .find({})
-    .then((posts) => {
-      response.json(posts);
-    });
+postsRouter.get('/', async (request, response) => {
+  const posts = await Post.find({});
+  response.json(posts);
 });
 
-postsRouter.post('/', (request, response) => {
+postsRouter.post('/', async (request, response) => {
   const post = new Post(request.body);
-
-  post
-    .save()
-    .then((result) => {
-      response.status(201).json(result);
-    });
+  const result = await post.save();
+  response.status(201).json(result);
 });
 
 module.exports = postsRouter;
