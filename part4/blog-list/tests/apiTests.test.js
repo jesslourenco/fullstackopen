@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const _ = require('lodash');
 const supertest = require('supertest');
 const app = require('../app');
 
@@ -78,6 +79,13 @@ test('posts are returned as json', async () => {
 test('there are six posts', async () => {
   const response = await api.get('/api/posts');
   expect(response.body).toHaveLength(6);
+});
+
+test('id property is named id', async () => {
+  const response = await api.get('/api/posts');
+  const post = _.head(response.body);
+
+  expect(post.id).toBeDefined();
 });
 
 afterAll(() => {
