@@ -142,6 +142,15 @@ test('New post req with missing url returns 400', async () => {
     .expect(400);
 });
 
+test('Successfully deletes a post', async () => {
+  const response = await api.get('/api/posts');
+  const post = _.head(response.body);
+
+  await api
+    .delete(`/api/posts/${post.id}`)
+    .expect(204);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

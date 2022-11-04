@@ -12,4 +12,9 @@ postsRouter.post('/', async (request, response) => {
   response.status(201).json(result);
 });
 
+postsRouter.delete('/:id', async (request, response) => {
+  await Post.findByIdAndRemove(request.params.id);
+  response.status(204).end();
+});
+
 module.exports = postsRouter;
