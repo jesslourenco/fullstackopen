@@ -88,6 +88,24 @@ test('id property is named id', async () => {
   expect(post.id).toBeDefined();
 });
 
+test('POST creates new post', async () => {
+  const newPost = {
+    title: 'a test title',
+    author: 'a test author',
+    url: 'https://atesturl.com',
+    likes: 15,
+  };
+
+  await api
+    .post('/api/posts')
+    .send(newPost)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const response = await api.get('/api/posts');
+  expect(response.body).toHaveLength(7);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
