@@ -151,6 +151,16 @@ test('Successfully deletes a post', async () => {
     .expect(204);
 });
 
+test('Successfully updates the likes of a post', async () => {
+  const likes = { likes: 13 };
+
+  const response = await api.get('/api/posts');
+  const post = _.head(response.body);
+
+  const updateResponse = await api.put(`/api/posts/${post.id}`).send(likes);
+  expect(updateResponse.body.likes).toBe(13);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

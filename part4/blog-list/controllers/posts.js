@@ -17,4 +17,11 @@ postsRouter.delete('/:id', async (request, response) => {
   response.status(204).end();
 });
 
+postsRouter.put('/:id', async (request, response) => {
+  const updateLikes = { likes: request.body.likes };
+
+  const result = await Post.findByIdAndUpdate(request.params.id, updateLikes, { new: true });
+  response.status(200).json(result);
+});
+
 module.exports = postsRouter;
