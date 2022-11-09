@@ -1,14 +1,30 @@
+/* eslint-disable consistent-return */
+const jwt = require('jsonwebtoken');
 const postsRouter = require('express').Router();
 const Post = require('../models/post');
 const User = require('../models/user');
 
+const getTokenFrom = (request) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7);
+  }
+  return null;
+};
+
 postsRouter.get('/', async (request, response) => {
-  const posts = await Post.find({}).populate('user', {username: 1, name: 1});
+  const posts = await Post.find({}).populate('user', { username: 1, name: 1 });
   response.json(posts);
 });
 
 postsRouter.post('/', async (request, response) => {
-  const user = await User.findOne();
+  const token = getTokenFrom(request);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
 
   const post = new Post({
     title: request.body.title,
