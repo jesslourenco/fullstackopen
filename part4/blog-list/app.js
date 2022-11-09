@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const config = require('./utils/config');
 const postsRouter = require('./controllers/posts');
 const usersRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
 const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 
@@ -31,6 +32,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);
 
 // app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler);
