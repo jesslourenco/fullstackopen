@@ -35,6 +35,17 @@ postsRouter.post('/', async (request, response) => {
 });
 
 postsRouter.delete('/:id', async (request, response) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
+  const post = await Post.findById(request.params.id);
+
+  if (!post.user || post.user.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'deletion unauthorized for this user' });
+  }
   await Post.findByIdAndRemove(request.params.id);
   response.status(204).end();
 });
