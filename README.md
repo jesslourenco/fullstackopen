@@ -2,9 +2,9 @@
 
 # Full Stack Open
 
-4/14 parts completed
+5/14 parts completed
 
-![29%](https://progress-bar.dev/29/?title=progress&width=500)
+![36%](https://progress-bar.dev/36/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -38,13 +38,13 @@ https://fullstackopen.com/en/about/
   - Saving data to MongoDB
   - Validation and ESLint
   
-### :pencil2: Part 4: Testing Express servers, user administration
+### :white_check_mark: Part 4: Testing Express servers, user administration
   - Structure of backend application, introduction to testing
   - Testing the backend
   - User administration
   - Token authentication
   
-### Part 5: Testing React apps
+### :pencil2: Part 5: Testing React apps
   - Login in frontend
   - props.children and proptypes
   - Testing React apps
