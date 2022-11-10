@@ -38,7 +38,7 @@ https://fullstackopen.com/en/about/
   - Saving data to MongoDB
   - Validation and ESLint
   
-### :white_check_mark: Part 4: Testing Express servers, user administration
+### :white_check_mark: [Part 4: Testing Express servers, user administration](https://github.com/jesslourenco/fullstackopen/tree/main/part4/blog-list)
   - Structure of backend application, introduction to testing
   - Testing the backend
   - User administration
