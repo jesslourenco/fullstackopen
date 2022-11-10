@@ -1,8 +1,6 @@
 /* eslint-disable consistent-return */
-const jwt = require('jsonwebtoken');
 const postsRouter = require('express').Router();
 const Post = require('../models/post');
-const User = require('../models/user');
 
 postsRouter.get('/', async (request, response) => {
   const posts = await Post.find({}).populate('user', { username: 1, name: 1 });
@@ -10,12 +8,7 @@ postsRouter.get('/', async (request, response) => {
 });
 
 postsRouter.post('/', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' });
-  }
-  const user = await User.findById(decodedToken.id);
+  const { user } = request;
 
   const post = new Post({
     title: request.body.title,
@@ -35,13 +28,8 @@ postsRouter.post('/', async (request, response) => {
 });
 
 postsRouter.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' });
-  }
-  const user = await User.findById(decodedToken.id);
   const post = await Post.findById(request.params.id);
+  const { user } = request;
 
   if (!post.user || post.user.toString() !== user.id.toString()) {
     return response.status(401).json({ error: 'deletion unauthorized for this user' });

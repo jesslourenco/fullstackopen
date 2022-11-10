@@ -1,10 +1,13 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const supertest = require('supertest');
+const jwt = require('jsonwebtoken');
 const app = require('../app');
 
 const api = supertest(app);
 const Post = require('../models/post');
+const User = require('../models/user');
 
 const initialPosts = [
   {
@@ -57,32 +60,63 @@ const initialPosts = [
   },
 ];
 
+let user = null;
+let token = null;
+
+const extractUser = async () => {
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+  user = await User.findById(decodedToken.id);
+};
+
 beforeEach(async () => {
+  await User.deleteMany({});
+
+  const newUser = { username: 'test', name: 'test', password: 'passcode' };
+  await api.post('/api/users').send(newUser).expect(201);
+
+  const info = await api.post('/api/login').send({ username: newUser.username, password: newUser.password }); // token, username, name
+  token = info.body.token;
+  user = extractUser();
+
   await Post.deleteMany({});
 
-  const postObjects = initialPosts
-    .map((post) => new Post(post));
+  const postObjects = initialPosts.map((post) => new Post({ ...post, user: user._id }));
+  const savedPosts = postObjects.map((post) => post.save());
+  await Promise.all(savedPosts);
 
-  const promiseArray = postObjects
-    .map((post) => post.save());
+  user.posts = user.posts.concat(initialPosts.map((post) => post._id));
+  await user.save();
+}, 10000);
 
-  await Promise.all(promiseArray);
+test('POST does not create new post without token', async () => {
+  const newPost = {
+    title: 'a test title',
+    author: 'a test author',
+    url: 'https://atesturl.com',
+    likes: 15,
+  };
+
+  await api
+    .post('/api/posts')
+    .send(newPost)
+    .expect(401);
 });
 
 test('posts are returned as json', async () => {
   await api
     .get('/api/posts')
+    .set('authorization', `Bearer ${token}`)
     .expect(200)
     .expect('Content-Type', /application\/json/);
 }, 100000);
 
 test('there are six posts', async () => {
-  const response = await api.get('/api/posts');
+  const response = await api.get('/api/posts').set('authorization', `Bearer ${token}`);
   expect(response.body).toHaveLength(6);
 });
 
 test('id property is named id', async () => {
-  const response = await api.get('/api/posts');
+  const response = await api.get('/api/posts').set('authorization', `Bearer ${token}`);
   const post = _.head(response.body);
 
   expect(post.id).toBeDefined();
@@ -98,11 +132,12 @@ test('POST creates new post', async () => {
 
   await api
     .post('/api/posts')
+    .set('authorization', `Bearer ${token}`)
     .send(newPost)
     .expect(201)
     .expect('Content-Type', /application\/json/);
 
-  const response = await api.get('/api/posts');
+  const response = await api.get('/api/posts').set('authorization', `Bearer ${token}`);
   expect(response.body).toHaveLength(7);
 });
 
@@ -113,7 +148,7 @@ test('Default value of likes is zero', async () => {
     url: 'https://atesturl.com',
   };
 
-  const response = await api.post('/api/posts').send(newPost);
+  const response = await api.post('/api/posts').set('authorization', `Bearer ${token}`).send(newPost);
   expect(response.status).toBe(201);
   expect(response.body.likes).toBe(0);
 });
@@ -126,6 +161,7 @@ test('New post req with missing title returns 400', async () => {
 
   await api
     .post('/api/posts')
+    .set('authorization', `Bearer ${token}`)
     .send(newPost)
     .expect(400);
 });
@@ -138,26 +174,28 @@ test('New post req with missing url returns 400', async () => {
 
   await api
     .post('/api/posts')
+    .set('authorization', `Bearer ${token}`)
     .send(newPost)
     .expect(400);
 });
 
 test('Successfully deletes a post', async () => {
-  const response = await api.get('/api/posts');
+  const response = await api.get('/api/posts').set('authorization', `Bearer ${token}`);
   const post = _.head(response.body);
 
   await api
     .delete(`/api/posts/${post.id}`)
+    .set('authorization', `Bearer ${token}`)
     .expect(204);
 });
 
 test('Successfully updates the likes of a post', async () => {
   const likes = { likes: 13 };
 
-  const response = await api.get('/api/posts');
+  const response = await api.get('/api/posts').set('authorization', `Bearer ${token}`);
   const post = _.head(response.body);
 
-  const updateResponse = await api.put(`/api/posts/${post.id}`).send(likes);
+  const updateResponse = await api.put(`/api/posts/${post.id}`).set('authorization', `Bearer ${token}`).send(likes);
   expect(updateResponse.body.likes).toBe(13);
 });
 
