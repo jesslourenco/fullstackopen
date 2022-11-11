@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Post from './components/post';
 import Notification from './components/notification';
 import Login from './components/login';
+import Logout from './components/logout';
 import postService from './services/posts';
 
 function App() {
@@ -46,6 +47,9 @@ function App() {
               {user.name}
               {' '}
               logged-in
+              <Logout
+                setUser={setUser}
+              />
             </p>
             {posts.map((post) => <Post key={post.id} post={post} />)}
           </div>
