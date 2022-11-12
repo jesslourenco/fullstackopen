@@ -5,6 +5,7 @@ import Post from './components/post';
 import Notification from './components/notification';
 import Login from './components/login';
 import Logout from './components/logout';
+import NewPost from './components/newpost';
 import postService from './services/posts';
 
 function App() {
@@ -47,10 +48,14 @@ function App() {
               {user.name}
               {' '}
               logged-in
-              <Logout
-                setUser={setUser}
-              />
+              <Logout setUser={setUser} />
             </p>
+            <h2>New Post</h2>
+            <div>
+              <NewPost
+                setPosts={setPosts}
+              />
+            </div>
             {posts.map((post) => <Post key={post.id} post={post} />)}
           </div>
         )}

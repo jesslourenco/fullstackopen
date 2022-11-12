@@ -1,4 +1,3 @@
-/* eslint-disable react/no-this-in-sfc */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react';
