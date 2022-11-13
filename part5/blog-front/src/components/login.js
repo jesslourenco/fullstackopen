@@ -5,7 +5,7 @@ import loginService from '../services/login';
 import postService from '../services/posts';
 
 // eslint-disable-next-line react/prop-types
-function Login({ setUser, setErrorMessage }) {
+function Login({ setUser, setMessage }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,10 +22,14 @@ function Login({ setUser, setErrorMessage }) {
       setUser(userForLogin);
       setUsername('');
       setPassword('');
-    } catch (exception) {
-      setErrorMessage('Wrong credentials');
+      setMessage('Login successful');
       setTimeout(() => {
-        setErrorMessage(null);
+        setMessage(null);
+      }, 5000);
+    } catch (exception) {
+      setMessage('Wrong credentials');
+      setTimeout(() => {
+        setMessage(null);
       }, 5000);
     }
   };

@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import postService from '../services/posts';
 
-function NewPost({ setPosts }) {
+function NewPost({ setPosts, setMessage }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -12,18 +12,26 @@ function NewPost({ setPosts }) {
   const handleNewPost = async (event) => {
     event.preventDefault();
 
-    try {
-      const newPost = { title, author, url };
+    const newPost = { title, author, url };
 
-      postService
-        .create(newPost)
-        .then(() => {
-          postService.getAll().then((e) => setPosts(e));
-          setTitle('');
-          setAuthor('');
-          setUrl('');
-        });
-    } catch (exception) { console.log(exception); }
+    postService
+      .create(newPost)
+      .then(() => {
+        postService.getAll().then((e) => setPosts(e));
+        setMessage(`${newPost.title} has been added!`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+        setTitle('');
+        setAuthor('');
+        setUrl('');
+      })
+      .catch((error) => {
+        setMessage(error.response.data.error);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      });
   };
 
   return (

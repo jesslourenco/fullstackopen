@@ -11,7 +11,7 @@ import postService from './services/posts';
 function App() {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedPostappUser');
@@ -33,13 +33,13 @@ function App() {
     <div>
       <h2>Blog</h2>
 
-      <Notification message={errorMessage} />
+      <Notification message={message} />
 
       {Object.keys(user).length === 0
         ? (
           <Login
             setUser={setUser}
-            setErrorMessage={setErrorMessage}
+            setMessage={setMessage}
           />
         )
         : (
@@ -48,12 +48,16 @@ function App() {
               {user.name}
               {' '}
               logged-in
-              <Logout setUser={setUser} />
+              <Logout
+                setUser={setUser}
+                setMessage={setMessage}
+              />
             </p>
             <h2>New Post</h2>
             <div>
               <NewPost
                 setPosts={setPosts}
+                setMessage={setMessage}
               />
             </div>
             {posts.map((post) => <Post key={post.id} post={post} />)}
