@@ -1,23 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/jsx-filename-extension */
+import { useState, useEffect } from 'react';
+import Post from './components/post';
+import Notification from './components/notification';
+import Login from './components/login';
+import Logout from './components/logout';
+import NewPost from './components/newpost';
+import postService from './services/posts';
 
 function App() {
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
+  const [message, setMessage] = useState(null);
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedPostappUser');
+    if (loggedUserJSON) {
+      const userData = JSON.parse(loggedUserJSON);
+      setUser(userData);
+      postService.setToken(userData.token);
+      postService.getAll().then((e) => setPosts(e));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(user).length !== 0) {
+      postService.getAll().then((e) => setPosts(e));
+    }
+  }, [user]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Blog</h2>
+
+      <Notification message={message} />
+
+      {Object.keys(user).length === 0
+        ? (
+          <Login
+            setUser={setUser}
+            setMessage={setMessage}
+          />
+        )
+        : (
+          <div>
+            <p>
+              {user.name}
+              {' '}
+              logged-in
+              <Logout
+                setUser={setUser}
+                setMessage={setMessage}
+              />
+            </p>
+            <h2>New Post</h2>
+            <div>
+              <NewPost
+                setPosts={setPosts}
+                setMessage={setMessage}
+              />
+            </div>
+            {posts.map((post) => <Post key={post.id} post={post} />)}
+          </div>
+        )}
+
     </div>
   );
 }
