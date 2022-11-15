@@ -12,6 +12,8 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [message, setMessage] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [postFormVisible, setNewPostVisible] = useState(false);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedPostappUser');
@@ -53,13 +55,20 @@ function App() {
                 setMessage={setMessage}
               />
             </p>
-            <h2>New Post</h2>
-            <div>
-              <NewPost
-                setPosts={setPosts}
-                setMessage={setMessage}
-              />
-            </div>
+            { setNewPostVisible
+              ? (
+                <>
+                  <h2>New Post</h2>
+                  <div>
+                    <NewPost
+                      setPosts={setPosts}
+                      setMessage={setMessage}
+                    />
+                  </div>
+                </>
+              )
+              : <button type="button" onClick={() => setNewPostVisible(true)}>New Post</button>}
+
             {posts.map((post) => <Post key={post.id} post={post} />)}
           </div>
         )}
