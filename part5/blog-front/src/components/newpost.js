@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import postService from '../services/posts';
 
-function NewPost({ setPosts, setMessage }) {
+function NewPost({ setPosts, setMessage, setNewPostVisible }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -25,6 +25,7 @@ function NewPost({ setPosts, setMessage }) {
         setTitle('');
         setAuthor('');
         setUrl('');
+        setNewPostVisible(false);
       })
       .catch((error) => {
         setMessage(error.response.data.error);

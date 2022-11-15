@@ -55,7 +55,7 @@ function App() {
                 setMessage={setMessage}
               />
             </p>
-            { setNewPostVisible
+            { postFormVisible
               ? (
                 <>
                   <h2>New Post</h2>
@@ -63,6 +63,7 @@ function App() {
                     <NewPost
                       setPosts={setPosts}
                       setMessage={setMessage}
+                      setNewPostVisible={setNewPostVisible}
                     />
                   </div>
                 </>
