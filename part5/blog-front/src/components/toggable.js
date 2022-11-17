@@ -3,9 +3,9 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 
-function Togglable(props) {
+const Togglable = forwardRef((props, refs) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
@@ -15,10 +15,14 @@ function Togglable(props) {
     setVisible(!visible);
   };
 
+  useImperativeHandle(refs, () => ({
+    toggleVisibility,
+  }));
+
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>view</button>
+        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
@@ -26,6 +30,6 @@ function Togglable(props) {
       </div>
     </div>
   );
-}
+});
 
 export default Togglable;

@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import postService from '../services/posts';
 
-function NewPost({ setPosts, setMessage, setNewPostVisible }) {
+function NewPost({ setPosts, setMessage, newPostRef }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -25,7 +25,7 @@ function NewPost({ setPosts, setMessage, setNewPostVisible }) {
         setTitle('');
         setAuthor('');
         setUrl('');
-        setNewPostVisible(false);
+        newPostRef.current.toggleVisibility();
       })
       .catch((error) => {
         setMessage(error.response.data.error);
