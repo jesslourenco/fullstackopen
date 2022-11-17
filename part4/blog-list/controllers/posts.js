@@ -3,7 +3,8 @@ const postsRouter = require('express').Router();
 const Post = require('../models/post');
 
 postsRouter.get('/', async (request, response) => {
-  const posts = await Post.find({}).populate('user', { username: 1, name: 1 });
+  let posts = await Post.find({}).populate('user', { username: 1, name: 1 });
+  posts = posts.sort((a, b) => b.likes - a.likes);
   response.json(posts);
 });
 
@@ -39,9 +40,8 @@ postsRouter.delete('/:id', async (request, response) => {
 });
 
 postsRouter.put('/:id', async (request, response) => {
-  const updateLikes = { likes: request.body.likes };
-
-  const result = await Post.findByIdAndUpdate(request.params.id, updateLikes, { new: true });
+  const query = { _id: request.body.id };
+  const result = await Post.findOneAndUpdate(query, { $inc: { likes: 1 } }, { new: true }).exec();
   response.status(200).json(result);
 });
 
