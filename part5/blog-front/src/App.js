@@ -68,7 +68,14 @@ function App() {
 
             </div>
 
-            {posts.map((post) => <Post key={post.id} post={post} />)}
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                post={post}
+                setPosts={setPosts}
+                setMessage={setMessage}
+              />
+            ))}
           </div>
         )}
 
