@@ -74,6 +74,7 @@ function App() {
                 post={post}
                 setPosts={setPosts}
                 setMessage={setMessage}
+                username={user.username}
               />
             ))}
           </div>
