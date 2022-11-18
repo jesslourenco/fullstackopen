@@ -32,7 +32,7 @@ postsRouter.delete('/:id', async (request, response) => {
   const post = await Post.findById(request.params.id);
   const { user } = request;
 
-  if (!post.user || post.user.toString() !== user.id.toString()) {
+  if (!post.user || (post.user.toString() !== user.id.toString())) {
     return response.status(401).json({ error: 'deletion unauthorized for this user' });
   }
   await Post.findByIdAndRemove(request.params.id);
