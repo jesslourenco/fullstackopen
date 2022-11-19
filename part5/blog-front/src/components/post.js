@@ -58,6 +58,8 @@ function Post({
   return (
     <div style={blogStyle}>
       { post.title }
+      {' '}
+      {post.author}
       <Togglable buttonLabel="view">
         {post.url}
         <br />
@@ -65,9 +67,6 @@ function Post({
         {' '}
         likes
         <button type="button" onClick={handleLikeClick}>+like</button>
-        <br />
-        {post.author}
-        <br />
         {username === post.user.username
           ? <button type="button" onClick={handleDelClick}>delete</button>
           : ' '}
