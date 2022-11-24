@@ -68,7 +68,7 @@ function Post({
         likes
         <button id="like-btn" type="button" onClick={handleLikeClick}>+like</button>
         {username === post.user.username
-          ? <button type="button" onClick={handleDelClick}>delete</button>
+          ? <button id="del-btn" type="button" onClick={handleDelClick}>delete</button>
           : ' '}
       </Togglable>
     </div>

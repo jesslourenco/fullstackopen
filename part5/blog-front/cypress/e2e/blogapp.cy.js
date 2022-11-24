@@ -73,5 +73,16 @@ describe('Blog app', function () {
         .click();
       cy.contains('1 likes');
     });
+
+    it('A post can be deleted by its creator', function () {
+      cy.createPost({ title: 'title', author: 'author', url: 'url' });
+      cy.contains('title')
+        .contains('view')
+        .click()
+        .get('#del-btn')
+        .click();
+      cy.get('.notificationMessage')
+        .should('contain', 'title has been removed!');
+    });
   });
 });
