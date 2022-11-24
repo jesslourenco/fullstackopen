@@ -63,5 +63,15 @@ describe('Blog app', function () {
       cy.get('.notificationMessage')
         .should('contain', 'title has been added!');
     });
+
+    it('A post can be liked', function () {
+      cy.createPost({ title: 'title', author: 'author', url: 'url' });
+      cy.contains('title')
+        .contains('view')
+        .click()
+        .get('#like-btn')
+        .click();
+      cy.contains('1 likes');
+    });
   });
 });

@@ -66,7 +66,7 @@ function Post({
         {post.likes}
         {' '}
         likes
-        <button type="button" onClick={handleLikeClick}>+like</button>
+        <button id="like-btn" type="button" onClick={handleLikeClick}>+like</button>
         {username === post.user.username
           ? <button type="button" onClick={handleDelClick}>delete</button>
           : ' '}
