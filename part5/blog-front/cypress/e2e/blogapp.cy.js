@@ -97,9 +97,13 @@ describe('Blog app', function () {
 
       cy.contains('another')
         .contains('+like')
+        .click()
         .click();
 
       cy.visit('http://localhost:3000');
+
+      cy.contains('another') // 5c step 3 test assertion
+        .contains('2 likes');
 
       cy.get('.blog').eq(0).should('contain', 'another');
       cy.get('.blog').eq(1).should('contain', 'title');

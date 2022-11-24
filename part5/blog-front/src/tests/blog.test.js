@@ -41,3 +41,26 @@ test('blog post shows details when button is clicked', async () => {
   const div = component.container.querySelector('.toggableContent');
   expect(div).not.toHaveStyle('display: none');
 });
+
+// test 5c step 3 is included in e2e tests to best fit my implementation
+
+// test below is 5c step4, not activated since it does not match my current implementation
+// i.e no handlers passed as props to components
+
+/* test('event handler gets correct details when post is created', async () => {
+  const user = userEvent.setup();
+
+  const button = component.getByText(/new post/);
+  await user.click(button);
+
+  component.container.querySelector('#title').type('title');
+  component.container.querySelector('#author').type('author');
+  component.container.querySelector('#url').type('url');
+
+  const btn = component.getByText(/create/);
+  await user.click(btn);
+
+  expect(createNote.mock.calls[0][0]).toBe('title');
+  expect(createNote.mock.calls[0][1]).toBe('author');
+  expect(createNote.mock.calls[0][2]).toBe('url');
+}); */
