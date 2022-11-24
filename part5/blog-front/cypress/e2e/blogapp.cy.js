@@ -13,14 +13,12 @@ describe('Blog app', function () {
 
   describe('Login', function () {
     beforeEach(function () {
-      cy.request('POST', 'http://localhost:3003/api/testing/reset');
-      cy.visit('http://localhost:3000');
       const user = {
         name: 'Matti Luukkainen',
         username: 'mluukkai',
         password: 'salainen',
       };
-      cy.request('POST', 'http://localhost:3000/api/users/', user);
+      cy.request('POST', 'http://localhost:3003/api/users/', user);
     });
 
     it('succeeds with correct credentials', function () {
@@ -41,6 +39,29 @@ describe('Blog app', function () {
 
       cy.get('.notificationMessage')
         .should('contain', 'Wrong credentials');
+    });
+  });
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      const user = {
+        name: 'Matti Luukkainen',
+        username: 'mluukkai',
+        password: 'salainen',
+      };
+      cy.request('POST', 'http://localhost:3003/api/users/', user);
+      cy.login({ username: 'mluukkai', password: 'salainen' });
+    });
+
+    it('A post can be created', function () {
+      cy.contains('new post').click();
+      cy.get('#title').type('title');
+      cy.get('#author').type('author');
+      cy.get('#url').type('url');
+      cy.get('#newpost-button').click();
+
+      cy.get('.notificationMessage')
+        .should('contain', 'title has been added!');
     });
   });
 });

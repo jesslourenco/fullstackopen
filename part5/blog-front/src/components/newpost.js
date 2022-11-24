@@ -40,6 +40,7 @@ function NewPost({ setPosts, setMessage, newPostRef }) {
       <div>
         Title
         <input
+          id="title"
           type="text"
           value={title}
           name="title"
@@ -49,6 +50,7 @@ function NewPost({ setPosts, setMessage, newPostRef }) {
       <div>
         Author
         <input
+          id="author"
           type="text"
           value={author}
           name="Author"
@@ -58,13 +60,14 @@ function NewPost({ setPosts, setMessage, newPostRef }) {
       <div>
         Url
         <input
+          id="url"
           type="text"
           value={url}
           name="Url"
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type="submit">create</button>
+      <button id="newpost-button" type="submit">create</button>
     </form>
   );
 }
