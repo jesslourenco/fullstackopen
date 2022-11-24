@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import postService from '../services/posts';
 
-function NewPost({ setPosts, setMessage }) {
+function NewPost({ setPosts, setMessage, newPostRef }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -25,6 +25,7 @@ function NewPost({ setPosts, setMessage }) {
         setTitle('');
         setAuthor('');
         setUrl('');
+        newPostRef.current.toggleVisibility();
       })
       .catch((error) => {
         setMessage(error.response.data.error);
@@ -39,6 +40,7 @@ function NewPost({ setPosts, setMessage }) {
       <div>
         Title
         <input
+          id="title"
           type="text"
           value={title}
           name="title"
@@ -48,6 +50,7 @@ function NewPost({ setPosts, setMessage }) {
       <div>
         Author
         <input
+          id="author"
           type="text"
           value={author}
           name="Author"
@@ -57,13 +60,14 @@ function NewPost({ setPosts, setMessage }) {
       <div>
         Url
         <input
+          id="url"
           type="text"
           value={url}
           name="Url"
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type="submit">create</button>
+      <button id="newpost-button" type="submit">create</button>
     </form>
   );
 }

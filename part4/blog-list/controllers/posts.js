@@ -3,7 +3,8 @@ const postsRouter = require('express').Router();
 const Post = require('../models/post');
 
 postsRouter.get('/', async (request, response) => {
-  const posts = await Post.find({}).populate('user', { username: 1, name: 1 });
+  let posts = await Post.find({}).populate('user', { username: 1, name: 1 });
+  posts = posts.sort((a, b) => b.likes - a.likes);
   response.json(posts);
 });
 
@@ -31,7 +32,7 @@ postsRouter.delete('/:id', async (request, response) => {
   const post = await Post.findById(request.params.id);
   const { user } = request;
 
-  if (!post.user || post.user.toString() !== user.id.toString()) {
+  if (!post.user || (post.user.toString() !== user.id.toString())) {
     return response.status(401).json({ error: 'deletion unauthorized for this user' });
   }
   await Post.findByIdAndRemove(request.params.id);
@@ -39,9 +40,8 @@ postsRouter.delete('/:id', async (request, response) => {
 });
 
 postsRouter.put('/:id', async (request, response) => {
-  const updateLikes = { likes: request.body.likes };
-
-  const result = await Post.findByIdAndUpdate(request.params.id, updateLikes, { new: true });
+  const query = { _id: request.body.id };
+  const result = await Post.findOneAndUpdate(query, { $inc: { likes: 1 } }, { new: true }).exec();
   response.status(200).json(result);
 });
 

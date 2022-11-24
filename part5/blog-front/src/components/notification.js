@@ -7,7 +7,7 @@ function Notification({ message }) {
   }
 
   return (
-    <div className="error">
+    <div className="notificationMessage">
       {message}
     </div>
   );
