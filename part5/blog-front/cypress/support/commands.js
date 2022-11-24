@@ -1,3 +1,6 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-undef */
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', 'http://localhost:3003/api/login', {
@@ -12,7 +15,9 @@ Cypress.Commands.add('createPost', ({ title, author, url }) => {
   cy.request({
     url: 'http://localhost:3003/api/posts',
     method: 'POST',
-    body: { title, author, url },
+    body: {
+      title, author, url
+    },
     headers: {
       Authorization: `bearer ${JSON.parse(localStorage.getItem('loggedPostappUser')).token}`,
     },

@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 /* eslint-disable no-undef */
@@ -83,6 +84,25 @@ describe('Blog app', function () {
         .click();
       cy.get('.notificationMessage')
         .should('contain', 'title has been removed!');
+    });
+
+    it.only('Posts are ordered by likes', function () {
+      cy.createPost({ title: 'title', author: 'author', url: 'url' });
+      // eslint-disable-next-line object-curly-newline
+      cy.createPost({ title: 'another', author: 'another', url: 'url' });
+
+      cy.contains('another')
+        .contains('view')
+        .click();
+
+      cy.contains('another')
+        .contains('+like')
+        .click();
+
+      cy.visit('http://localhost:3000');
+
+      cy.get('.blog').eq(0).should('contain', 'another');
+      cy.get('.blog').eq(1).should('contain', 'title');
     });
   });
 });

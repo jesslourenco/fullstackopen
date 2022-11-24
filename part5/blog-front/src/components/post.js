@@ -56,7 +56,7 @@ function Post({
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       { post.title }
       {' '}
       {post.author}
