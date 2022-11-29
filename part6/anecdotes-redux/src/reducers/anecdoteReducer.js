@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable default-param-last */
+
+import { createSlice } from '@reduxjs/toolkit';
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,33 +22,29 @@ const asObject = (anecdote) => ({
 
 const initialState = anecdotesAtStart.map(asObject);
 
-export const vote = (id) => ({
-  type: 'VOTE',
-  id: { id },
-});
-
-export const create = (anecdote) => ({
-  type: 'CREATE',
-  data: {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    create(state, action) {
+      const anecdote = action.payload;
+      state.push({
+        content: anecdote,
+        id: getId(),
+        votes: 0,
+      });
+    },
+    vote(state, action) {
+      const id = action.payload;
+      const anecdote = state.find((a) => a.id === id);
+      const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
+      return (state
+        .map((a) => (a.id !== id ? a : updatedAnecdote))
+        .sort((a, b) => b.votes - a.votes)
+      );
+    },
   },
 });
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'VOTE': {
-      const { id } = action.id;
-      const anecdote = state.find((a) => a.id === id);
-      const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
-      return state.map((a) => (a.id !== id ? a : updatedAnecdote));
-    }
-    case 'CREATE':
-      return [...state, action.data];
-    default:
-      return state;
-  }
-};
-
-export default reducer;
+export const { create, vote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
