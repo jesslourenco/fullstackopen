@@ -24,15 +24,25 @@ export const vote = (id) => ({
   id: { id },
 });
 
+export const create = (anecdote) => ({
+  type: 'CREATE',
+  data: {
+    content: anecdote,
+    id: getId(),
+    votes: 0,
+  },
+});
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE': {
       const { id } = action.id;
       const anecdote = state.find((a) => a.id === id);
       const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
-
       return state.map((a) => (a.id !== id ? a : updatedAnecdote));
     }
+    case 'CREATE':
+      return [...state, action.data];
     default:
       return state;
   }
