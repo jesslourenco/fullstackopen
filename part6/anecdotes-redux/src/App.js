@@ -6,13 +6,15 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/button-has-type */
 import { useSelector, useDispatch } from 'react-redux';
+import { vote } from './reducers/anecdoteReducer';
 
 function App() {
   const anecdotes = useSelector((state) => state);
   // eslint-disable-next-line no-unused-vars
   const dispatch = useDispatch();
 
-  const vote = (id) => {
+  const voteHandler = (id) => {
+    dispatch(vote(id));
     console.log('vote', id);
   };
 
@@ -28,7 +30,7 @@ function App() {
           has
           {' '}
           {anecdote.votes}
-          <button onClick={() => vote(anecdote.id)}>vote</button>
+          <button onClick={() => voteHandler(anecdote.id)}>vote</button>
         </div>
       </div>)}
       <h2>create new</h2>
