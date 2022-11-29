@@ -6,7 +6,8 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/button-has-type */
 import { useSelector, useDispatch } from 'react-redux';
-import { vote, create } from './reducers/anecdoteReducer';
+import { vote } from './reducers/anecdoteReducer';
+import AnecdoteForm from './components/AnecdoteForm';
 
 function App() {
   const anecdotes = useSelector((state) => state);
@@ -16,15 +17,6 @@ function App() {
   const voteHandler = (id) => {
     dispatch(vote(id));
     console.log('vote', id);
-  };
-
-  const addAnecdote = (event) => {
-    event.preventDefault();
-    const anecdote = event.target.new.value;
-    console.log(anecdote);
-    // eslint-disable-next-line no-param-reassign
-    event.target.new.value = '';
-    dispatch(create(anecdote));
   };
 
   return (
@@ -42,11 +34,7 @@ function App() {
           <button onClick={() => voteHandler(anecdote.id)}>vote</button>
         </div>
       </div>)}
-      <h2>create new</h2>
-      <form onSubmit={addAnecdote}>
-        <div><input name="new" /></div>
-        <button type="submit">create</button>
-      </form>
+      <AnecdoteForm />
     </div>
   );
 }
