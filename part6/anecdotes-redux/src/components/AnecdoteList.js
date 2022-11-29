@@ -7,6 +7,7 @@ import { setMessage, clearMessage } from '../reducers/notificationReducer';
 
 function AnecdoteList() {
   const anecdotes = useSelector((state) => state.anecdotes);
+  const query = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
   const voteHandler = (id) => {
@@ -17,9 +18,15 @@ function AnecdoteList() {
     }, 5000);
   };
 
+  const display = query
+    ? anecdotes.filter((a) => a.content
+      .toLowerCase()
+      .includes(query))
+    : anecdotes;
+
   return (
     <div>
-      {anecdotes
+      {display
         .map((anecdote) => (
           <div key={anecdote.id}>
             <div>
