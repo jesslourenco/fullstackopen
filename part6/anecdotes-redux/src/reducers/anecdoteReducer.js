@@ -2,6 +2,7 @@
 /* eslint-disable default-param-last */
 
 import { createSlice } from '@reduxjs/toolkit';
+import anecdoteService from '../services/anecdotes';
 
 const anecdotesAtStart = [];
 
@@ -38,4 +39,10 @@ const anecdoteSlice = createSlice({
 });
 
 export const { create, vote, setAnecdotes } = anecdoteSlice.actions;
+
+export const initializeAnecdotes = () => async (dispatch) => {
+  const notes = await anecdoteService.getAll();
+  dispatch(setAnecdotes(notes));
+};
+
 export default anecdoteSlice.reducer;
