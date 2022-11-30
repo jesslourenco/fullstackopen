@@ -3,7 +3,6 @@
 import { useDispatch } from 'react-redux';
 import { create } from '../reducers/anecdoteReducer';
 import { setMessage, clearMessage } from '../reducers/notificationReducer';
-import anecdoteService from '../services/anecdotes';
 
 function AnecdoteForm() {
   const dispatch = useDispatch();
@@ -13,8 +12,7 @@ function AnecdoteForm() {
     const anecdote = event.target.new.value;
     // eslint-disable-next-line no-param-reassign
     event.target.new.value = '';
-    const newAnecdote = await anecdoteService.createNew(anecdote);
-    dispatch(create(newAnecdote));
+    dispatch(create(anecdote));
     dispatch(setMessage('new anecdote created!'));
     setTimeout(() => {
       dispatch(clearMessage());
