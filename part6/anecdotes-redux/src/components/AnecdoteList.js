@@ -3,7 +3,7 @@
 
 import { useSelector, useDispatch } from 'react-redux';
 import { updateVote } from '../reducers/anecdoteReducer';
-import { setMessage, clearMessage } from '../reducers/notificationReducer';
+import { notify } from '../reducers/notificationReducer';
 
 function AnecdoteList() {
   const anecdotes = useSelector((state) => state.anecdotes);
@@ -12,10 +12,7 @@ function AnecdoteList() {
 
   const voteHandler = (anecdote) => {
     dispatch(updateVote(anecdote));
-    dispatch(setMessage(`voted for anecdote ${anecdote.id}!`));
-    setTimeout(() => {
-      dispatch(clearMessage());
-    }, 5000);
+    dispatch(notify(`voted for anecdote ${anecdote.id}!`, 1));
   };
 
   const display = query

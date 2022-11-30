@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import { useDispatch } from 'react-redux';
 import { create } from '../reducers/anecdoteReducer';
-import { setMessage, clearMessage } from '../reducers/notificationReducer';
+import { notify } from '../reducers/notificationReducer';
 
 function AnecdoteForm() {
   const dispatch = useDispatch();
@@ -13,10 +13,7 @@ function AnecdoteForm() {
     // eslint-disable-next-line no-param-reassign
     event.target.new.value = '';
     dispatch(create(anecdote));
-    dispatch(setMessage('new anecdote created!'));
-    setTimeout(() => {
-      dispatch(clearMessage());
-    }, 5000);
+    dispatch(notify('new anecdote created!', 5));
   };
 
   return (
