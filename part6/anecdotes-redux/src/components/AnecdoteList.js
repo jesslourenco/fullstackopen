@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-filename-extension */
 
 import { useSelector, useDispatch } from 'react-redux';
-import { vote } from '../reducers/anecdoteReducer';
+import { updateVote } from '../reducers/anecdoteReducer';
 import { setMessage, clearMessage } from '../reducers/notificationReducer';
 
 function AnecdoteList() {
@@ -10,9 +10,9 @@ function AnecdoteList() {
   const query = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const voteHandler = (id) => {
-    dispatch(vote(id));
-    dispatch(setMessage(`voted for anecdote ${id}!`));
+  const voteHandler = (anecdote) => {
+    dispatch(updateVote(anecdote));
+    dispatch(setMessage(`voted for anecdote ${anecdote.id}!`));
     setTimeout(() => {
       dispatch(clearMessage());
     }, 5000);
@@ -36,7 +36,7 @@ function AnecdoteList() {
               has
               {' '}
               {anecdote.votes}
-              <button type="submit" onClick={() => voteHandler(anecdote.id)}>vote</button>
+              <button type="submit" onClick={() => voteHandler(anecdote)}>vote</button>
             </div>
           </div>
         ))}
