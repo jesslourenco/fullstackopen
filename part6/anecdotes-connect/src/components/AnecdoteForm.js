@@ -1,19 +1,19 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { create } from '../reducers/anecdoteReducer';
 import { notify } from '../reducers/notificationReducer';
 
-function AnecdoteForm() {
-  const dispatch = useDispatch();
-
+function AnecdoteForm(props) {
   const addAnecdote = async (event) => {
     event.preventDefault();
     const anecdote = event.target.new.value;
     // eslint-disable-next-line no-param-reassign
     event.target.new.value = '';
-    dispatch(create(anecdote));
-    dispatch(notify('new anecdote created!', 5));
+    props.create(anecdote);
+    props.notify('new anecdote created!', 5);
   };
 
   return (
@@ -26,4 +26,11 @@ function AnecdoteForm() {
     </div>
   );
 }
-export default AnecdoteForm;
+
+const mapDispatchToProps = {
+  create,
+  notify,
+};
+
+const ConnectedForm = connect(null, mapDispatchToProps)(AnecdoteForm);
+export default ConnectedForm;
