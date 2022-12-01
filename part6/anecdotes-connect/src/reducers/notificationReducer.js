@@ -19,11 +19,18 @@ const notificationSlice = createSlice({
 
 export const { setMessage, clearMessage } = notificationSlice.actions;
 
+let timeout;
+
 export const notify = (message, seconds) => async (dispatch) => {
   const ms = seconds * 1000;
 
   await dispatch(setMessage(message));
-  setTimeout(() => {
+
+  if (timeout) {
+    clearTimeout(timeout);
+  }
+
+  timeout = setTimeout(() => {
     dispatch(clearMessage());
   }, ms);
 };
