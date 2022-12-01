@@ -12,7 +12,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   BrowserRouter as Router,
   // eslint-disable-next-line no-unused-vars
-  Routes, Route, useMatch, Link,
+  Routes, Route, useMatch, Link, useNavigate,
 } from 'react-router-dom';
 
 function Menu() {
@@ -104,6 +104,8 @@ function Footer() {
 }
 
 function CreateNew(props) {
+  const navigate = useNavigate();
+
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
@@ -116,6 +118,7 @@ function CreateNew(props) {
       info,
       votes: 0,
     });
+    navigate('/');
   };
 
   return (
@@ -164,6 +167,8 @@ function App() {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    setNotification('the anecdote has been succesfully created!');
+    setTimeout(() => { setNotification(''); }, 5000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -189,6 +194,7 @@ function App() {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification || ''}
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
