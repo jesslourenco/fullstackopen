@@ -1,15 +1,15 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { setFilter } from '../reducers/filterReducer';
 
-function Filter() {
-  const dispatch = useDispatch();
-
+function Filter(props) {
   const handleChange = (event) => {
     event.preventDefault();
     const query = event.target.value;
-    dispatch(setFilter(query));
+    props.setFilter(query);
   };
   const style = {
     marginBottom: 10,
@@ -24,4 +24,13 @@ function Filter() {
   );
 }
 
-export default Filter;
+const mapStateToProps = (state) => ({
+  filter: state.filter,
+});
+
+const mapDispatchToProps = {
+  setFilter,
+};
+
+const ConnectedFilter = connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default ConnectedFilter;
