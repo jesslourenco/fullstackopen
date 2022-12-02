@@ -9,11 +9,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
 import {
-  // eslint-disable-next-line no-unused-vars
-  BrowserRouter as Router,
-  // eslint-disable-next-line no-unused-vars
   Routes, Route, useMatch, Link, useNavigate,
 } from 'react-router-dom';
+
+// eslint-disable-next-line import/named
+import { useField } from './hooks';
 
 function Menu() {
   const padding = {
@@ -106,16 +106,16 @@ function Footer() {
 function CreateNew(props) {
   const navigate = useNavigate();
 
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [info, setInfo] = useState('');
+  const content = useField('content');
+  const author = useField('author');
+  const info = useField('info');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
     navigate('/');
@@ -127,15 +127,15 @@ function CreateNew(props) {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" value={content} onChange={(e) => setContent(e.target.value)} />
+          <input value={content.value} onChange={content.onChange} />
         </div>
         <div>
           author
-          <input name="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input value={author.value} onChange={author.onChange} />
         </div>
         <div>
           url for more info
-          <input name="info" value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input value={info.value} onChange={info.onChange} />
         </div>
         <button>create</button>
       </form>
