@@ -106,13 +106,22 @@ function Footer() {
 function CreateNew(props) {
   const navigate = useNavigate();
 
+  // for exercise 7b step3:
+  // my lint prohibits spread syntax in props
+  // if I was to use it, to avoid conflict the definitions below must be:
+  /*
+    const {reset: resetContent, ...content} = useField('content');
+    const {reset: resetAuthor, ...author} = useField('author');
+    const {reset: resetInfo, ...info} = useField('info');
+  */
+  // then call resetContent() etc on handlereset
+
   const content = useField('content');
   const author = useField('author');
   const info = useField('info');
 
   const handleReset = (e) => {
     e.preventDefault();
-    // document.getElementById('createForm').reset();
     content.reset();
     author.reset();
     info.reset();
