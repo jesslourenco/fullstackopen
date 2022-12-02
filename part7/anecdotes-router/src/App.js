@@ -8,6 +8,12 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
+import {
+  // eslint-disable-next-line no-unused-vars
+  BrowserRouter as Router,
+  // eslint-disable-next-line no-unused-vars
+  Routes, Route, useMatch, Link, useNavigate,
+} from 'react-router-dom';
 
 function Menu() {
   const padding = {
@@ -15,9 +21,9 @@ function Menu() {
   };
   return (
     <div>
-      <a href="#" style={padding}>anecdotes</a>
-      <a href="#" style={padding}>create new</a>
-      <a href="#" style={padding}>about</a>
+      <a href="/" style={padding}>anecdotes</a>
+      <a href="/create" style={padding}>create new</a>
+      <a href="/about" style={padding}>about</a>
     </div>
   );
 }
@@ -27,8 +33,38 @@ function AnecdoteList({ anecdotes }) {
     <div>
       <h2>Anecdotes</h2>
       <ul>
-        {anecdotes.map((anecdote) => <li key={anecdote.id}>{anecdote.content}</li>)}
+        {anecdotes.map((anecdote) => (
+          <li key={anecdote.id}>
+            <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content}</Link>
+          </li>
+        ))}
       </ul>
+    </div>
+  );
+}
+
+function Anecdote({ anecdote }) {
+  return (
+    <div>
+      <h2>
+        {anecdote.content}
+        {' '}
+        by
+        {' '}
+        {anecdote.author}
+      </h2>
+      <p>
+        has
+        {' '}
+        {' '}
+        {anecdote.votes}
+        {' '}
+        votes
+
+      </p>
+      <p>
+        <a href={anecdote.info}>more info</a>
+      </p>
     </div>
   );
 }
@@ -68,6 +104,8 @@ function Footer() {
 }
 
 function CreateNew(props) {
+  const navigate = useNavigate();
+
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
@@ -80,6 +118,7 @@ function CreateNew(props) {
       info,
       votes: 0,
     });
+    navigate('/');
   };
 
   return (
@@ -128,6 +167,8 @@ function App() {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    setNotification('the anecdote has been succesfully created!');
+    setTimeout(() => { setNotification(''); }, 5000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -144,13 +185,22 @@ function App() {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
+  const match = useMatch('/anecdote/:id');
+  const anecdote = match
+    ? anecdotes.find((a) => a.id === Number(match.params.id))
+    : null;
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      {notification || ''}
+      <Routes>
+        <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/anecdote/:id" element={<Anecdote anecdote={anecdote} />} />
+      </Routes>
       <Footer />
     </div>
   );
