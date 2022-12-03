@@ -4,7 +4,7 @@
 
 5/14 parts completed
 
-![36%](https://progress-bar.dev/36/?title=progress&width=500)
+![50%](https://progress-bar.dev/50/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -44,19 +44,19 @@ https://fullstackopen.com/en/about/
   - User administration
   - Token authentication
   
-### :pencil2: Part 5: Testing React apps
+### :white_check_mark: [Part 5: Testing React apps](https://github.com/jesslourenco/fullstackopen/tree/main/part5/blog-front)
   - Login in frontend
   - props.children and proptypes
   - Testing React apps
   - End to end -testing
   
-### Part 6: State management with Redux
+### :white_check_mark: [Part 6: State management with Redux](https://github.com/jesslourenco/fullstackopen/tree/main/part6)
   - Flux-architecture and Redux
   - Many reducers
   - Communicating with server in a redux application
   - Connect
 
-### Part 7: React router, custom hooks, styling app with CSS and webpack
+### :pencil2: Part 7: React router, custom hooks, styling app with CSS and webpack
   - React-router
   - Custom hooks
   - More about styles
