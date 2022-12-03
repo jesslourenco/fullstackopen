@@ -2,7 +2,7 @@
 
 # Full Stack Open
 
-5/14 parts completed
+7/14 parts completed
 
 ![50%](https://progress-bar.dev/50/?title=progress&width=500)
 
