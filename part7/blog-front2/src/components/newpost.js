@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from "react";
-import postService from "../services/posts";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import postService from '../services/posts';
+import { notify } from '../reducers/notificationReducer';
 
-function NewPost({ setPosts, setMessage, newPostRef }) {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+function NewPost({ setPosts, newPostRef }) {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+  const dispatch = useDispatch();
 
   const handleNewPost = async (event) => {
     event.preventDefault();
@@ -18,20 +21,14 @@ function NewPost({ setPosts, setMessage, newPostRef }) {
       .create(newPost)
       .then(() => {
         postService.getAll().then((e) => setPosts(e));
-        setMessage(`${newPost.title} has been added!`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-        setTitle("");
-        setAuthor("");
-        setUrl("");
+        dispatch(notify(`${newPost.title} has been added!`, 3));
+        setTitle('');
+        setAuthor('');
+        setUrl('');
         newPostRef.current.toggleVisibility();
       })
       .catch((error) => {
-        setMessage(error.response.data.error);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+        dispatch(notify(error.response.data.error, 5));
       });
   };
 

@@ -1,17 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import Togglable from "./toggable";
-import postService from "../services/posts";
+import { useDispatch } from 'react-redux';
+import Togglable from './toggable';
+import postService from '../services/posts';
+import { notify } from '../reducers/notificationReducer';
 
-function Post({ post, setPosts, setMessage, username }) {
+function Post({
+  post, setPosts, username,
+}) {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   };
+
+  const dispatch = useDispatch();
 
   const handleLikeClick = async (event) => {
     event.preventDefault();
@@ -20,16 +26,10 @@ function Post({ post, setPosts, setMessage, username }) {
       .update(post)
       .then(() => {
         postService.getAll().then((e) => setPosts(e));
-        setMessage(`You liked ${post.title}!`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+        dispatch(notify(`You liked ${post.title}!`, 3));
       })
       .catch((error) => {
-        setMessage(error.response.data.error);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+        dispatch(notify(error.response.data.error, 5));
       });
   };
 
@@ -40,26 +40,24 @@ function Post({ post, setPosts, setMessage, username }) {
       .remove(post)
       .then(() => {
         postService.getAll().then((e) => setPosts(e));
-        setMessage(`${post.title} has been removed!`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+        dispatch(notify(`${post.title} has been removed!`, 3));
       })
       .catch((error) => {
-        setMessage(error.response.data.error);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+        dispatch(notify(error.response.data.error, 5));
       });
   };
 
   return (
     <div className="blog" style={blogStyle}>
-      {post.title} {post.author}
+      {post.title}
+      {' '}
+      {post.author}
       <Togglable buttonLabel="view">
         {post.url}
         <br />
-        {post.likes} likes
+        {post.likes}
+        {' '}
+        likes
         <button id="like-btn" type="button" onClick={handleLikeClick}>
           +like
         </button>
@@ -68,7 +66,7 @@ function Post({ post, setPosts, setMessage, username }) {
             delete
           </button>
         ) : (
-          " "
+          ' '
         )}
       </Togglable>
     </div>

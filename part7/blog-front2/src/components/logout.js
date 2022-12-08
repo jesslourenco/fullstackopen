@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-function Logout({ setUser, setMessage }) {
+import { useDispatch } from 'react-redux';
+import { notify } from '../reducers/notificationReducer';
+
+function Logout({ setUser }) {
+  const dispatch = useDispatch();
+
   const handleClick = () => {
-    window.localStorage.removeItem("loggedPostappUser");
-    setMessage("User has been logged out");
-    setTimeout(() => {
-      setMessage(null);
-    }, 5000);
+    window.localStorage.removeItem('loggedPostappUser');
+    dispatch(notify('User has been logged out', 3));
     setUser({});
   };
   return (

@@ -1,13 +1,16 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from "react";
-import loginService from "../services/login";
-import postService from "../services/posts";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import loginService from '../services/login';
+import postService from '../services/posts';
+import { notify } from '../reducers/notificationReducer';
 
 // eslint-disable-next-line react/prop-types
-function Login({ setUser, setMessage }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ setUser }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -18,23 +21,17 @@ function Login({ setUser, setMessage }) {
       });
 
       window.localStorage.setItem(
-        "loggedPostappUser",
-        JSON.stringify(userForLogin)
+        'loggedPostappUser',
+        JSON.stringify(userForLogin),
       );
 
       postService.setToken(userForLogin.token);
       setUser(userForLogin);
-      setUsername("");
-      setPassword("");
-      setMessage("Login successful");
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
+      setUsername('');
+      setPassword('');
+      dispatch(notify('Login successful', 3));
     } catch (exception) {
-      setMessage("Wrong credentials");
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
+      dispatch(notify('Wrong credentials', 3));
     }
   };
 

@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseUrl = "/api/posts";
+const baseUrl = '/api/posts';
 let token = null;
 
 const setToken = (newToken) => {
@@ -32,7 +32,7 @@ const update = async (updatedObject) => {
   const response = await axios.put(
     `${baseUrl}/${updatedObject.id}`,
     updatedObject,
-    config
+    config,
   );
   return response.data;
 };
