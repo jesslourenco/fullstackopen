@@ -5,15 +5,12 @@ const postSlice = createSlice({
   name: 'posts',
   initialState: [],
   reducers: {
-    /* vote(state, action) {
-      const id = action.payload;
-      const anecdote = state.find((a) => a.id === id);
-      const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
+    like(state, action) {
+      const post = action.payload;
       return (state
-        .map((a) => (a.id !== id ? a : updatedAnecdote))
-        .sort((a, b) => b.votes - a.votes)
+        .map((p) => (p.id !== post.id ? p : post))
       );
-    }, */
+    },
     setAllPosts(state, action) {
       return action.payload;
     },
@@ -23,7 +20,7 @@ const postSlice = createSlice({
   },
 });
 
-export const { setAllPosts, addPost } = postSlice.actions;
+export const { setAllPosts, addPost, like } = postSlice.actions;
 
 export const getAllPosts = () => async (dispatch) => {
   const posts = await postService.getAll();
@@ -35,9 +32,9 @@ export const createPost = (newObj) => async (dispatch) => {
   dispatch(addPost(newPost));
 };
 
-/* export const updateVote = (anecdote) => async (dispatch) => {
-  await anecdoteService.update(anecdote);
-  dispatch(vote(anecdote.id));
-}; */
+export const updateLikes = (post) => async (dispatch) => {
+  const updatedPost = await postService.update(post);
+  dispatch(like(updatedPost));
+};
 
 export default postSlice.reducer;

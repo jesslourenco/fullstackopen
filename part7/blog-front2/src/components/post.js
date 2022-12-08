@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Togglable from './toggable';
 import postService from '../services/posts';
 import { notify } from '../reducers/notificationReducer';
+import { updateLikes, getAllPosts } from '../reducers/postReducer';
 
 function Post({
   post, username,
@@ -22,10 +23,9 @@ function Post({
   const handleLikeClick = async (event) => {
     event.preventDefault();
 
-    postService
-      .update(post)
+    dispatch(updateLikes(post))
       .then(() => {
-        // postService.getAll().then((e) => setPosts(e));
+        dispatch(getAllPosts());
         dispatch(notify(`You liked ${post.title}!`, 3));
       })
       .catch((error) => {
