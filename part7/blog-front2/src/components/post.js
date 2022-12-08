@@ -7,7 +7,7 @@ import postService from '../services/posts';
 import { notify } from '../reducers/notificationReducer';
 
 function Post({
-  post, setPosts, username,
+  post, username,
 }) {
   const blogStyle = {
     paddingTop: 10,
@@ -25,7 +25,7 @@ function Post({
     postService
       .update(post)
       .then(() => {
-        postService.getAll().then((e) => setPosts(e));
+        // postService.getAll().then((e) => setPosts(e));
         dispatch(notify(`You liked ${post.title}!`, 3));
       })
       .catch((error) => {
@@ -39,7 +39,7 @@ function Post({
     postService
       .remove(post)
       .then(() => {
-        postService.getAll().then((e) => setPosts(e));
+        // postService.getAll().then((e) => setPosts(e));
         dispatch(notify(`${post.title} has been removed!`, 3));
       })
       .catch((error) => {

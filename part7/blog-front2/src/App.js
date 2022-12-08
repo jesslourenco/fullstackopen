@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Post from './components/post';
 import Notification from './components/notification';
 import Login from './components/login';
@@ -8,9 +9,11 @@ import Logout from './components/logout';
 import NewPost from './components/newpost';
 import postService from './services/posts';
 import Togglable from './components/toggable';
+import { getAllPosts } from './reducers/postReducer';
 
 function App() {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.posts);
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -19,15 +22,14 @@ function App() {
       const userData = JSON.parse(loggedUserJSON);
       setUser(userData);
       postService.setToken(userData.token);
-      postService.getAll().then((e) => setPosts(e));
     }
   }, []);
 
   useEffect(() => {
     if (Object.keys(user).length !== 0) {
-      postService.getAll().then((e) => setPosts(e));
+      dispatch(getAllPosts());
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   const newPostRef = useRef();
 
@@ -51,7 +53,6 @@ function App() {
           <div>
             <Togglable buttonLabel="new post" ref={newPostRef}>
               <NewPost
-                setPosts={setPosts}
                 newPostRef={newPostRef}
               />
             </Togglable>
@@ -61,7 +62,6 @@ function App() {
             <Post
               key={post.id}
               post={post}
-              setPosts={setPosts}
               username={user.username}
             />
           ))}

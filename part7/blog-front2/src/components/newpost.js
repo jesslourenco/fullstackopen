@@ -3,24 +3,24 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import postService from '../services/posts';
 import { notify } from '../reducers/notificationReducer';
+// eslint-disable-next-line no-unused-vars
+import { getAllPosts, createPost } from '../reducers/postReducer';
 
-function NewPost({ setPosts, newPostRef }) {
+function NewPost({ newPostRef }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
   const dispatch = useDispatch();
 
-  const handleNewPost = async (event) => {
+  const handleNewPost = (event) => {
     event.preventDefault();
 
     const newPost = { title, author, url };
 
-    postService
-      .create(newPost)
+    dispatch(createPost(newPost))
       .then(() => {
-        postService.getAll().then((e) => setPosts(e));
+        // postService.getAll().then((e) => setPosts(e));
         dispatch(notify(`${newPost.title} has been added!`, 3));
         setTitle('');
         setAuthor('');
