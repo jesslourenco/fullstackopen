@@ -1,20 +1,10 @@
-/* eslint-disable quotes */
-/* eslint-disable react/jsx-curly-brace-presence */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/style-prop-object */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { getAllUsers } from '../reducers/usersReducer';
+import { Link } from 'react-router-dom';
 
-function Users() {
-  const dispatch = useDispatch();
-  const userList = useSelector((state) => state.allUsers);
-
-  useEffect(() => {
-    dispatch(getAllUsers());
-  }, [dispatch]);
-
+function Users({ userList }) {
   return (
 
     <div>
@@ -34,7 +24,7 @@ function Users() {
           {userList.map((user) => (
             <tr key={user.id}>
               <td>
-                {user.name}
+                <Link to={`/users/${user.id}`}>{user.name}</Link>
               </td>
               <td>
                 {user.posts.length}
