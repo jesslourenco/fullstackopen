@@ -1,20 +1,18 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Post from './components/post';
+import { Routes, Route } from 'react-router-dom';
 import Notification from './components/notification';
+import Blog from './components/blog';
+import { getAllPosts } from './reducers/postReducer';
+import { userLocalStorage, sendToken } from './reducers/loginReducer';
+import Users from './components/users';
 import Login from './components/login';
 import Logout from './components/logout';
-import NewPost from './components/newpost';
-import Togglable from './components/toggable';
-import { getAllPosts } from './reducers/postReducer';
-// eslint-disable-next-line no-unused-vars
-import { userLocalStorage, sendToken } from './reducers/userReducer';
 
 function App() {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -30,14 +28,10 @@ function App() {
     }
   }, [user, dispatch]);
 
-  const newPostRef = useRef();
-
   return (
     <div>
       <h2>Blog</h2>
-
       <Notification />
-
       {user === null ? (
         <Login />
       ) : (
@@ -48,22 +42,10 @@ function App() {
             logged-in
             <Logout />
           </p>
-          <h2>New Post</h2>
-          <div>
-            <Togglable buttonLabel="new post" ref={newPostRef}>
-              <NewPost
-                newPostRef={newPostRef}
-              />
-            </Togglable>
-          </div>
-
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              post={post}
-              username={user.username}
-            />
-          ))}
+          <Routes>
+            <Route path="/users" element={<Users />} />
+            <Route path="/" element={<Blog user={user} />} />
+          </Routes>
         </div>
       )}
     </div>

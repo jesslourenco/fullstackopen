@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import { useDispatch } from 'react-redux';
 import { notify } from '../reducers/notificationReducer';
-import { cleanUser } from '../reducers/userReducer';
+import { cleanUser } from '../reducers/loginReducer';
 
 function Logout() {
   const dispatch = useDispatch();

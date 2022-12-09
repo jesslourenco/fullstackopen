@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import postService from '../services/posts';
 import loginService from '../services/login';
 
-const userSlice = createSlice({
+const loginSlice = createSlice({
   name: 'user',
   initialState: null,
   reducers: {
@@ -17,7 +17,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, cleanUser } = userSlice.actions;
+export const { setUser, cleanUser } = loginSlice.actions;
 
 export const sendToken = (token) => {
   postService.setToken(token);
@@ -40,4 +40,4 @@ export const userLocalStorage = () => async (dispatch) => {
   sendToken(userData.token);
 };
 
-export default userSlice.reducer;
+export default loginSlice.reducer;

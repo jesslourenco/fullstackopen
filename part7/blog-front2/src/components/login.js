@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { notify } from '../reducers/notificationReducer';
-import { loginUser } from '../reducers/userReducer';
+import { loginUser } from '../reducers/loginReducer';
 
 // eslint-disable-next-line react/prop-types
 function Login() {
