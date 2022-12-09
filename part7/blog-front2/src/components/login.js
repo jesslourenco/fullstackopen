@@ -2,12 +2,11 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import loginService from '../services/login';
-import postService from '../services/posts';
 import { notify } from '../reducers/notificationReducer';
+import { loginUser } from '../reducers/userReducer';
 
 // eslint-disable-next-line react/prop-types
-function Login({ setUser }) {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -15,18 +14,7 @@ function Login({ setUser }) {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const userForLogin = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem(
-        'loggedPostappUser',
-        JSON.stringify(userForLogin),
-      );
-
-      postService.setToken(userForLogin.token);
-      setUser(userForLogin);
+      dispatch(loginUser({ username, password }));
       setUsername('');
       setPassword('');
       dispatch(notify('Login successful', 3));

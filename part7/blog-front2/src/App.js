@@ -1,32 +1,31 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Post from './components/post';
 import Notification from './components/notification';
 import Login from './components/login';
 import Logout from './components/logout';
 import NewPost from './components/newpost';
-import postService from './services/posts';
 import Togglable from './components/toggable';
 import { getAllPosts } from './reducers/postReducer';
+// eslint-disable-next-line no-unused-vars
+import { userLocalStorage, sendToken } from './reducers/userReducer';
 
 function App() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
-  const [user, setUser] = useState({});
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedPostappUser');
-    if (loggedUserJSON) {
-      const userData = JSON.parse(loggedUserJSON);
-      setUser(userData);
-      postService.setToken(userData.token);
+    if (window.localStorage.getItem('loggedPostappUser') !== null) {
+      dispatch(userLocalStorage());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (Object.keys(user).length !== 0) {
+    if (user !== null) {
+      sendToken(user.token);
       dispatch(getAllPosts());
     }
   }, [user, dispatch]);
@@ -39,15 +38,15 @@ function App() {
 
       <Notification />
 
-      {Object.keys(user).length === 0 ? (
-        <Login setUser={setUser} />
+      {user === null ? (
+        <Login />
       ) : (
         <div>
           <p>
             {user.name}
             {' '}
             logged-in
-            <Logout setUser={setUser} />
+            <Logout />
           </p>
           <h2>New Post</h2>
           <div>

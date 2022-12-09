@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = '/api/posts';
-let token = null;
+let token;
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`;
