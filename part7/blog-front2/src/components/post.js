@@ -1,72 +1,44 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
 import { useDispatch } from 'react-redux';
-import Togglable from './toggable';
 import { notify } from '../reducers/notificationReducer';
-import { updateLikes, getAllPosts, deletePost } from '../reducers/postReducer';
+import { updateLikes } from '../reducers/postReducer';
 
-function Post({
-  post, username,
-}) {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
+function Post({ matchPost, posts }) {
   const dispatch = useDispatch();
+
+  const post = matchPost
+    ? posts.find((p) => p.id === matchPost.params.id)
+    : null;
+
+  if (!post) {
+    return null;
+  }
 
   const handleLikeClick = async (event) => {
     event.preventDefault();
-
-    dispatch(updateLikes(post))
-      .then(() => {
-        dispatch(getAllPosts());
-        dispatch(notify(`You liked ${post.title}!`, 3));
-      })
-      .catch((error) => {
-        dispatch(notify(error.response.data.error, 5));
-      });
-  };
-
-  const handleDelClick = async (event) => {
-    event.preventDefault();
-
-    dispatch(deletePost(post))
-      .then(() => {
-        // postService.getAll().then((e) => setPosts(e));
-        dispatch(notify(`${post.title} has been removed!`, 3));
-      })
-      .catch((error) => {
-        dispatch(notify(error.response.data.error, 5));
-      });
+    try {
+      await dispatch(updateLikes(post));
+      dispatch(notify(`You liked ${post.title}!`, 3));
+    } catch (e) {
+      dispatch(notify(e.response.data.error, 5));
+    }
   };
 
   return (
-    <div className="blog" style={blogStyle}>
-      {post.title}
+    <div className="blog">
+      <h2>{post.title}</h2>
+      By {post.author}
+      <br />
+      <a href={post.url}>link</a>
+      <br />
+      {post.likes} likes
       {' '}
-      {post.author}
-      <Togglable buttonLabel="view">
-        {post.url}
-        <br />
-        {post.likes}
-        {' '}
-        likes
-        <button id="like-btn" type="button" onClick={handleLikeClick}>
-          +like
-        </button>
-        {username === post.user.username ? (
-          <button id="del-btn" type="button" onClick={handleDelClick}>
-            delete
-          </button>
-        ) : (
-          ' '
-        )}
-      </Togglable>
+      <button id="like-btn" type="button" onClick={handleLikeClick}>
+        +like
+      </button>
     </div>
   );
 }

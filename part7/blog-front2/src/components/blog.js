@@ -1,32 +1,54 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Togglable from './toggable';
 import NewPost from './newpost';
-import Post from './post';
+import { deletePost } from '../reducers/postReducer';
+import { notify } from '../reducers/notificationReducer';
 
-function Blog({ user }) {
+function Blog({ posts, username }) {
   const newPostRef = useRef();
-  const posts = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
 
+  const handleDelClick = async (post) => {
+    try {
+      await dispatch(deletePost(post));
+      dispatch(notify(`${post.title} has been removed!`, 3));
+    } catch (e) {
+      dispatch(notify(e.response.data.error, 5));
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+  };
   return (
     <div>
-      <h2>New Post</h2>
+      <h3>New Post</h3>
       <div>
         <Togglable buttonLabel="new post" ref={newPostRef}>
           <NewPost
             newPostRef={newPostRef}
           />
         </Togglable>
+        <br />
       </div>
+      <h3>Blog list</h3>
       {posts.map((post) => (
-        <Post
-          key={post.id}
-          post={post}
-          username={user.username}
-        />
+        <li key={post.id} style={{ listStyle: 'none' }}>
+
+          <Link to={`/posts/${post.id}`}>{post.title}</Link>
+          {' '}
+          {username === post.user.username ? (
+            <button id="del-btn" type="button" onClick={() => handleDelClick(post)}>
+              delete
+            </button>
+          ) : (
+            ' '
+          )}
+        </li>
       ))}
     </div>
   );
