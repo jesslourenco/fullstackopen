@@ -20,12 +20,12 @@ function NewPost({ newPostRef }) {
 
     dispatch(createPost(newPost))
       .then(() => {
-        // postService.getAll().then((e) => setPosts(e));
         dispatch(notify(`${newPost.title} has been added!`, 3));
         setTitle('');
         setAuthor('');
         setUrl('');
         newPostRef.current.toggleVisibility();
+        dispatch(getAllPosts());
       })
       .catch((error) => {
         dispatch(notify(error.response.data.error, 5));

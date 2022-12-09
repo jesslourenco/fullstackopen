@@ -12,14 +12,14 @@ const postSlice = createSlice({
       );
     },
     setAllPosts(state, action) {
-      return action.payload;
+      return (action.payload);
     },
     addPost(state, action) {
       state.push(action.payload);
     },
     removePost(state, action) {
       const id = action.payload;
-      return state.filter((p) => (p.id !== id));
+      return (state.filter((p) => (p.id !== id)));
     },
   },
 });
