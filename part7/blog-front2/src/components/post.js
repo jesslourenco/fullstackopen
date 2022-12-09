@@ -3,9 +3,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useDispatch } from 'react-redux';
 import Togglable from './toggable';
-import postService from '../services/posts';
 import { notify } from '../reducers/notificationReducer';
-import { updateLikes, getAllPosts } from '../reducers/postReducer';
+import { updateLikes, getAllPosts, deletePost } from '../reducers/postReducer';
 
 function Post({
   post, username,
@@ -36,8 +35,7 @@ function Post({
   const handleDelClick = async (event) => {
     event.preventDefault();
 
-    postService
-      .remove(post)
+    dispatch(deletePost(post))
       .then(() => {
         // postService.getAll().then((e) => setPosts(e));
         dispatch(notify(`${post.title} has been removed!`, 3));
