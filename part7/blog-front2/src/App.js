@@ -11,7 +11,8 @@ import { userLocalStorage, sendToken } from './reducers/loginReducer';
 import { getAllUsers } from './reducers/usersReducer';
 import Users from './components/users';
 import Login from './components/login';
-import Logout from './components/logout';
+import Menu from './components/menu';
+
 import UserPage from './components/userPage';
 
 function App() {
@@ -39,18 +40,13 @@ function App() {
 
   return (
     <div>
-      <h2>Blog</h2>
+      <h2>Blog app</h2>
       <Notification />
       {loggedUser === null ? (
         <Login />
       ) : (
         <div>
-          <p>
-            {loggedUser.name}
-            {' '}
-            logged-in
-            <Logout />
-          </p>
+          <Menu username={loggedUser.username} />
           <Routes>
             <Route path="/users" element={<Users userList={userList} />} />
             <Route path="/" element={<Blog username={loggedUser.username} posts={posts} />} />
