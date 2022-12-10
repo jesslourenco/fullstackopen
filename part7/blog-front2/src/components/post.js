@@ -5,6 +5,7 @@
 import { useDispatch } from 'react-redux';
 import { notify } from '../reducers/notificationReducer';
 import { updateLikes } from '../reducers/postReducer';
+import NewComment from './newcomment';
 
 function Post({ matchPost, posts }) {
   const dispatch = useDispatch();
@@ -39,6 +40,12 @@ function Post({ matchPost, posts }) {
       <button id="like-btn" type="button" onClick={handleLikeClick}>
         +like
       </button>
+
+      <h4>comments</h4>
+      <NewComment postId={post.id} />
+      {post.comments.map((c) => (
+        <li key={c.id}>{c.content}</li>
+      ))}
     </div>
   );
 }

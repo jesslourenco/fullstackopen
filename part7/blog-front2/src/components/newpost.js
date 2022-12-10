@@ -4,7 +4,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { notify } from '../reducers/notificationReducer';
-// eslint-disable-next-line no-unused-vars
 import { getAllPosts, createPost } from '../reducers/postReducer';
 
 function NewPost({ newPostRef }) {
@@ -13,23 +12,22 @@ function NewPost({ newPostRef }) {
   const [url, setUrl] = useState('');
   const dispatch = useDispatch();
 
-  const handleNewPost = (event) => {
+  const handleNewPost = async (event) => {
     event.preventDefault();
 
     const newPost = { title, author, url };
 
-    dispatch(createPost(newPost))
-      .then(() => {
-        dispatch(notify(`${newPost.title} has been added!`, 3));
-        setTitle('');
-        setAuthor('');
-        setUrl('');
-        newPostRef.current.toggleVisibility();
-        dispatch(getAllPosts());
-      })
-      .catch((error) => {
-        dispatch(notify(error.response.data.error, 5));
-      });
+    try {
+      await dispatch(createPost(newPost));
+      dispatch(notify(`${newPost.title} has been added!`, 3));
+      setTitle('');
+      setAuthor('');
+      setUrl('');
+      newPostRef.current.toggleVisibility();
+      await dispatch(getAllPosts());
+    } catch (e) {
+      dispatch(notify(e.response.data.error, 5));
+    }
   };
 
   return (

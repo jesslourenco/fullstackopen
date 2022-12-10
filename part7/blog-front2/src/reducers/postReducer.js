@@ -11,7 +11,16 @@ const postSlice = createSlice({
         .map((p) => (p.id !== post.id ? p : post))
       );
     },
+    comment(state, action) {
+      const comment = action.payload;
+      console.log(comment);
+      return (state.map((p) => (p.id !== comment.post.id
+        ? p
+        : p.comments.push(comment)))
+      );
+    },
     setAllPosts(state, action) {
+      console.log(action.payload);
       return (action.payload);
     },
     addPost(state, action) {
@@ -25,7 +34,7 @@ const postSlice = createSlice({
 });
 
 export const {
-  setAllPosts, addPost, like, removePost,
+  setAllPosts, addPost, like, removePost, comment,
 } = postSlice.actions;
 
 export const getAllPosts = () => async (dispatch) => {
@@ -46,6 +55,11 @@ export const updateLikes = (post) => async (dispatch) => {
 export const deletePost = (post) => async (dispatch) => {
   await postService.remove(post);
   dispatch(removePost(post.id));
+};
+
+export const addComment = (id, content) => async (dispatch) => {
+  const savedComment = await postService.newComment(id, content);
+  dispatch(comment(savedComment));
 };
 
 export default postSlice.reducer;

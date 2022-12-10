@@ -11,9 +11,8 @@ function Menu({ username }) {
     <div>
       <a href="/" style={padding}>blogs</a>
       <a href="/users" style={padding}>users</a>
-      <a href="/about" style={padding}>about</a>
       {' '}
-      {username}
+      <b>{username}</b>
       {' '}
       is logged in
       {' '}
