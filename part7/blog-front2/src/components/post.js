@@ -1,76 +1,55 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import Togglable from "./toggable";
-import postService from "../services/posts";
+import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import { notify } from '../reducers/notificationReducer';
+import { updateLikes } from '../reducers/postReducer';
+import NewComment from './newcomment';
 
-function Post({ post, setPosts, setMessage, username }) {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+function Post({ matchPost, posts }) {
+  const dispatch = useDispatch();
+
+  const post = matchPost
+    ? posts.find((p) => p.id === matchPost.params.id)
+    : null;
+
+  if (!post) {
+    return null;
+  }
 
   const handleLikeClick = async (event) => {
     event.preventDefault();
-
-    postService
-      .update(post)
-      .then(() => {
-        postService.getAll().then((e) => setPosts(e));
-        setMessage(`You liked ${post.title}!`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      })
-      .catch((error) => {
-        setMessage(error.response.data.error);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      });
-  };
-
-  const handleDelClick = async (event) => {
-    event.preventDefault();
-
-    postService
-      .remove(post)
-      .then(() => {
-        postService.getAll().then((e) => setPosts(e));
-        setMessage(`${post.title} has been removed!`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      })
-      .catch((error) => {
-        setMessage(error.response.data.error);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      });
+    try {
+      await dispatch(updateLikes(post));
+      dispatch(notify(`You liked ${post.title}!`, 3));
+    } catch (e) {
+      dispatch(notify(e.response.data.error, 5));
+    }
   };
 
   return (
-    <div className="blog" style={blogStyle}>
-      {post.title} {post.author}
-      <Togglable buttonLabel="view">
-        {post.url}
-        <br />
-        {post.likes} likes
-        <button id="like-btn" type="button" onClick={handleLikeClick}>
-          +like
-        </button>
-        {username === post.user.username ? (
-          <button id="del-btn" type="button" onClick={handleDelClick}>
-            delete
-          </button>
-        ) : (
-          " "
-        )}
-      </Togglable>
+    <div className="blog">
+      <br />
+      <h2>{post.title}</h2>
+      By {post.author}
+      <br />
+      <a href={post.url}>link</a>
+      <br />
+      {post.likes} likes
+      {' '}
+      <Button variant="primary" size="sm" id="like-btn" type="button" onClick={handleLikeClick}>
+        +like
+      </Button>
+      <br /><br />
+      <p>
+        <h5>comments...</h5>
+        <NewComment postId={post.id} />
+        {post.comments.map((c) => (
+          <li key={c.id}>{c.content}</li>
+        ))}
+      </p>
     </div>
   );
 }

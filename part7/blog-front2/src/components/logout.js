@@ -1,19 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-function Logout({ setUser, setMessage }) {
+import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import { notify } from '../reducers/notificationReducer';
+import { cleanUser } from '../reducers/loginReducer';
+
+function Logout() {
+  const dispatch = useDispatch();
+
   const handleClick = () => {
-    window.localStorage.removeItem("loggedPostappUser");
-    setMessage("User has been logged out");
-    setTimeout(() => {
-      setMessage(null);
-    }, 5000);
-    setUser({});
+    window.localStorage.removeItem('loggedPostappUser');
+    dispatch(notify('User has been logged out', 3));
+    dispatch(cleanUser());
   };
   return (
-    <button type="button" onClick={handleClick}>
+    <Button variant="link" type="button" onClick={handleClick}>
       logout
-    </button>
+    </Button>
   );
 }
 

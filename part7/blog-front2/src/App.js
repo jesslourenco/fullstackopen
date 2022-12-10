@@ -1,73 +1,61 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
-import { useState, useEffect, useRef } from "react";
-import Post from "./components/post";
-import Notification from "./components/notification";
-import Login from "./components/login";
-import Logout from "./components/logout";
-import NewPost from "./components/newpost";
-import postService from "./services/posts";
-import Togglable from "./components/toggable";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route, useMatch } from 'react-router-dom';
+import Notification from './components/notification';
+import Blog from './components/blog';
+import Post from './components/post';
+import { getAllPosts } from './reducers/postReducer';
+import { userLocalStorage, sendToken } from './reducers/loginReducer';
+import { getAllUsers } from './reducers/usersReducer';
+import Users from './components/users';
+import Login from './components/login';
+import Menu from './components/menu';
+
+import UserPage from './components/userPage';
 
 function App() {
-  const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
-  const [message, setMessage] = useState(null);
+  const dispatch = useDispatch();
+  const loggedUser = useSelector((state) => state.user);
+  const userList = useSelector((state) => state.allUsers);
+  const posts = useSelector((state) => state.posts);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedPostappUser");
-    if (loggedUserJSON) {
-      const userData = JSON.parse(loggedUserJSON);
-      setUser(userData);
-      postService.setToken(userData.token);
-      postService.getAll().then((e) => setPosts(e));
+    if (window.localStorage.getItem('loggedPostappUser') !== null) {
+      dispatch(userLocalStorage());
+      dispatch(getAllUsers());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (Object.keys(user).length !== 0) {
-      postService.getAll().then((e) => setPosts(e));
+    if (loggedUser !== null) {
+      sendToken(loggedUser.token);
+      dispatch(getAllPosts());
     }
-  }, [user]);
+  }, [loggedUser, dispatch]);
 
-  const newPostRef = useRef();
+  const matchUser = useMatch('/users/:id');
+  const matchPost = useMatch('/posts/:id');
 
   return (
-    <div>
-      <h2>Blog</h2>
-
-      <Notification message={message} />
-
-      {Object.keys(user).length === 0 ? (
-        <Login setUser={setUser} setMessage={setMessage} />
-      ) : (
-        <div>
-          <p>
-            {user.name} logged-in
-            <Logout setUser={setUser} setMessage={setMessage} />
-          </p>
-          <h2>New Post</h2>
+    <div className="container">
+      <div>
+        <Notification />
+        {loggedUser === null ? (
+          <Login />
+        ) : (
           <div>
-            <Togglable buttonLabel="new post" ref={newPostRef}>
-              <NewPost
-                setPosts={setPosts}
-                setMessage={setMessage}
-                newPostRef={newPostRef}
-              />
-            </Togglable>
+            <Menu username={loggedUser.username} />
+            <Routes>
+              <Route path="/users" element={<Users userList={userList} />} />
+              <Route path="/" element={<Blog username={loggedUser.username} posts={posts} />} />
+              <Route path="/users/:id" element={<UserPage matchUser={matchUser} userList={userList} />} />
+              <Route path="/posts/:id" element={<Post matchPost={matchPost} posts={posts} />} />
+            </Routes>
           </div>
-
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              post={post}
-              setPosts={setPosts}
-              setMessage={setMessage}
-              username={user.username}
-            />
-          ))}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
