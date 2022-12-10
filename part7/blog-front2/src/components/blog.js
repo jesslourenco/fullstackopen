@@ -5,6 +5,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 import Togglable from './toggable';
 import NewPost from './newpost';
 import { deletePost } from '../reducers/postReducer';
@@ -26,9 +27,10 @@ function Blog({ posts, username }) {
   };
   return (
     <div>
-      <h3>New Post</h3>
+      <br />
+      <h5>Create a new Post</h5>
       <div>
-        <Togglable buttonLabel="new post" ref={newPostRef}>
+        <Togglable buttonLabel="show form" ref={newPostRef}>
           <NewPost
             newPostRef={newPostRef}
           />
@@ -42,9 +44,9 @@ function Blog({ posts, username }) {
           <Link to={`/posts/${post.id}`}>{post.title}</Link>
           {' '}
           {username === post.user.username ? (
-            <button id="del-btn" type="button" onClick={() => handleDelClick(post)}>
+            <Button variant="danger" size="sm" id="del-btn" type="button" onClick={() => handleDelClick(post)}>
               delete
-            </button>
+            </Button>
           ) : (
             ' '
           )}

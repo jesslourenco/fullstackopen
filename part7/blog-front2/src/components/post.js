@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
 import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 import { notify } from '../reducers/notificationReducer';
 import { updateLikes } from '../reducers/postReducer';
 import NewComment from './newcomment';
@@ -30,6 +31,7 @@ function Post({ matchPost, posts }) {
 
   return (
     <div className="blog">
+      <br />
       <h2>{post.title}</h2>
       By {post.author}
       <br />
@@ -37,15 +39,17 @@ function Post({ matchPost, posts }) {
       <br />
       {post.likes} likes
       {' '}
-      <button id="like-btn" type="button" onClick={handleLikeClick}>
+      <Button variant="primary" size="sm" id="like-btn" type="button" onClick={handleLikeClick}>
         +like
-      </button>
-
-      <h4>comments</h4>
-      <NewComment postId={post.id} />
-      {post.comments.map((c) => (
-        <li key={c.id}>{c.content}</li>
-      ))}
+      </Button>
+      <br /><br />
+      <p>
+        <h5>comments...</h5>
+        <NewComment postId={post.id} />
+        {post.comments.map((c) => (
+          <li key={c.id}>{c.content}</li>
+        ))}
+      </p>
     </div>
   );
 }

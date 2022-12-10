@@ -39,22 +39,23 @@ function App() {
   const matchPost = useMatch('/posts/:id');
 
   return (
-    <div>
-      <h2>Blog app</h2>
-      <Notification />
-      {loggedUser === null ? (
-        <Login />
-      ) : (
-        <div>
-          <Menu username={loggedUser.username} />
-          <Routes>
-            <Route path="/users" element={<Users userList={userList} />} />
-            <Route path="/" element={<Blog username={loggedUser.username} posts={posts} />} />
-            <Route path="/users/:id" element={<UserPage matchUser={matchUser} userList={userList} />} />
-            <Route path="/posts/:id" element={<Post matchPost={matchPost} posts={posts} />} />
-          </Routes>
-        </div>
-      )}
+    <div className="container">
+      <div>
+        <Notification />
+        {loggedUser === null ? (
+          <Login />
+        ) : (
+          <div>
+            <Menu username={loggedUser.username} />
+            <Routes>
+              <Route path="/users" element={<Users userList={userList} />} />
+              <Route path="/" element={<Blog username={loggedUser.username} posts={posts} />} />
+              <Route path="/users/:id" element={<UserPage matchUser={matchUser} userList={userList} />} />
+              <Route path="/posts/:id" element={<Post matchPost={matchPost} posts={posts} />} />
+            </Routes>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

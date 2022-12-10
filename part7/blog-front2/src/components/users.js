@@ -1,15 +1,17 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/style-prop-object */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
 import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 
 function Users({ userList }) {
   return (
 
     <div>
       <h2>Users</h2>
-      <table>
+      <Table size="sm" striped>
         <thead>
           <tr>
             <th>
@@ -32,7 +34,7 @@ function Users({ userList }) {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }

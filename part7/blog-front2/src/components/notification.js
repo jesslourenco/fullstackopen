@@ -2,21 +2,17 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */
 import { useSelector } from 'react-redux';
+import Alert from 'react-bootstrap/Alert';
 
 function Notification() {
   const notification = useSelector((state) => state.notification);
 
   if (notification === '') return null;
 
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1,
-  };
   return (
-    <div style={style}>
+    <Alert variant="info">
       {notification}
-    </div>
+    </Alert>
   );
 }
 

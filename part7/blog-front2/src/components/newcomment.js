@@ -4,6 +4,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { notify } from '../reducers/notificationReducer';
 import { addComment, getAllPosts } from '../reducers/postReducer';
 
@@ -27,18 +29,18 @@ function NewComment({ postId }) {
   };
 
   return (
-    <form onSubmit={handleComment}>
-      <div>
-        <input
+    <Form onSubmit={handleComment}>
+      <Form.Group className="mb-3">
+        <Form.Control
           type="text"
           value={comment}
           name="comment"
           onChange={({ target }) => setComment(target.value)}
         />
-        {' '}
-        <button type="submit">post</button>
-      </div>
-    </form>
+        <br />
+        <Button size="sm" type="submit">post</Button>
+      </Form.Group>
+    </Form>
   );
 }
 

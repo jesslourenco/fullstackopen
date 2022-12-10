@@ -13,14 +13,12 @@ const postSlice = createSlice({
     },
     comment(state, action) {
       const comment = action.payload;
-      console.log(comment);
       return (state.map((p) => (p.id !== comment.post.id
         ? p
         : p.comments.push(comment)))
       );
     },
     setAllPosts(state, action) {
-      console.log(action.payload);
       return (action.payload);
     },
     addPost(state, action) {

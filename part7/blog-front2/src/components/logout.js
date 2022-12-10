@@ -2,6 +2,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-filename-extension */
 import { useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 import { notify } from '../reducers/notificationReducer';
 import { cleanUser } from '../reducers/loginReducer';
 
@@ -14,9 +15,9 @@ function Logout() {
     dispatch(cleanUser());
   };
   return (
-    <button type="button" onClick={handleClick}>
+    <Button variant="link" type="button" onClick={handleClick}>
       logout
-    </button>
+    </Button>
   );
 }
 
