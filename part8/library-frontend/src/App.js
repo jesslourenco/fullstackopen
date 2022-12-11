@@ -1,23 +1,15 @@
 import { useState } from 'react'
-import { useQuery } from '@apollo/client'
+// import { useQuery } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import {ALL_AUTHORS} from './components/Queries'
-import {ALL_BOOKS} from './components/Queries'
+// import {ALL_AUTHORS} from './components/Queries'
+// import {ALL_BOOKS} from './components/Queries'
 
 
 
 const App = () => {
   const [page, setPage] = useState('authors')
-
-  const responseA = useQuery(ALL_AUTHORS)
-  if (responseA.loading) return <div>loading...</div>
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const responseB = useQuery(ALL_BOOKS)
-  if (responseB.loading) return <div>loading...</div>
-  
 
   return (
     <div>
@@ -27,9 +19,9 @@ const App = () => {
         <button onClick={() => setPage('add')}>add book</button>
       </div>
 
-      <Authors show={page === 'authors'} allAuthors={responseA.data.allAuthors} />
+      <Authors show={page === 'authors'} />
 
-      <Books show={page === 'books'} allBooks={responseB.data.allBooks}/>
+      <Books show={page === 'books'} />
 
       <NewBook show={page === 'add'} />
     </div>
