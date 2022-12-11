@@ -1,10 +1,11 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { gql } from 'graphql-tag';
-import {mongoose} from 'mongoose';
+import { mongoose } from 'mongoose';
 import Book from './models/book.js';
 import Author from './models/author.js';
 import 'dotenv/config';
+import author from './models/author.js';
 
 
 /* let authors = [
@@ -102,14 +103,14 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    #author: Author
+    author: Author!
     genres: [String!]!
     id: ID!
   }
   type Author {
     name: String!
     born: Int
-    bookCount: Int
+    # bookCount: Int
     id: ID!
   }
   type Query {
@@ -122,7 +123,7 @@ const typeDefs = gql`
     addBook(
       title: String!
       published: Int!
-      #author: String
+      author: String!
       genres: [String!]!
     ): Book
 
@@ -136,60 +137,66 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     authorCount: async () => Author.collection.countDocuments(),
-    bookCount: async () => Book.collection.countDocuments(),
-    allBooks: async (root, args) => {
-      if(Object.keys(args).length === 0) return Book.find({})
-     /*  inactive for now
-     if(Object.keys(args).length === 1){
-        if(args.author) return books.filter((b) => b.author === args.author)
-        if(args.genre) return books.filter((b) => b.genres.includes(args.genre))  
-      }
 
-      return books.filter((b) => (b.genres.includes(args.genre) && b.author === args.author)) */
-    }, 
+    bookCount: async () => Book.collection.countDocuments(),
+
+    allBooks: async (root, args) => {
+
+      if (Object.keys(args).length === 0) return Book.find({}).populate('author')
+
+      args.author ?
+        args.author = await Author.find({ name: args.author })
+        : args.author
+
+      if (Object.keys(args).length === 1) return args.author ? Book.find({ author: args.author }).populate('author')
+        : Book.find({ genres: { $in: [args.genre] } }).populate('author')
+
+      return Book.find({ author: args.author, genres: { $in: [args.genre] } }).populate('author')
+    },
 
     allAuthors: async () => {
+
       return Author.find({})
+
       /* inactive for now
       const response =  authors.map((a) => {
         const count = books.filter((b) => b.author === a.name).length
         a.bookCount = count
         return a
       })
-      return response    */  
+      return response    */
     }
   },
 
   Mutation: {
     addBook: async (root, args) => {
-      /* inactive for now
-       if (!authors.find((a) => a.name === args.author)){
-        authors = authors.concat({
-          name: args.author,
-          id: uuid() })
-       } */
 
-       const book = new Book({...args })
-       try{
-        await book.save()
-       } catch (error) {
-        throw new UserInputError(error.message, {invalidArgs: args, })
-       }
-       return book
+      const updateAuthor = async () => {
+        const authorQ = await Author.findOne({ name: args.author })
+
+        if (authorQ !== null) {
+          return authorQ.id
+        }
+
+        const newAuthor = await new Author({ name: args.author })
+        await newAuthor.save()
+        return newAuthor.id
+      }
+
+      args.author = await updateAuthor()
+
+      const book = await new Book({ ...args })
+      await book.save()
+
+      return await book.populate('author')
     },
-  
-    /* inactive for now
-    editAuthor: (root, args) => {
-      
-    const author = authors.find((a) => a.name === args.name)
 
-    if(!author) return null
+    editAuthor: async (root, args) => {
+      const author = await Author.findOneAndUpdate({name: args.name}, { born: args.setBornTo }, { new: true })
 
-    const updatedAuthor = {...author, born: args.setBornTo}
-    authors = authors.map((a) => a.name === args.name ? updatedAuthor : a)
-
-    return updatedAuthor
-    } */
+      if (!author) return null
+      return author
+    }
   }
 }
 
@@ -199,8 +206,8 @@ const server = new ApolloServer({
 })
 
 const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-  })
+  listen: { port: 4000 },
+})
 
 
 console.log(`🚀  Server ready at: ${url}`);
