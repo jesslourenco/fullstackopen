@@ -2,8 +2,9 @@ import { useQuery } from '@apollo/client'
 import { BOOKS_ON_GENRE } from './Queries'
 
 const Book = (props) => {
-    const { loading, error, data } = useQuery(BOOKS_ON_GENRE, {
+    const { loading, data } = useQuery(BOOKS_ON_GENRE, {
         variables: { genre: props.filter },
+        fetchPolicy: "no-cache"
     })
 
     if (loading) return <div>loading...</div>
