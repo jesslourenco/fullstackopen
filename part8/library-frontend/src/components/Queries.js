@@ -17,6 +17,29 @@ query {
       name
     }
     published
+    genres
+  }
+}
+`
+
+export const BOOKS_ON_GENRE = gql`
+query onGenre($genre: String!) {
+  allBooks(genre: $genre){
+    title
+    published
+    author{
+      name
+    }
+  }   
+}
+`
+
+export const CURRENT_USER = gql`
+query {
+  me{
+  username
+  id
+  favGenre
   }
 }
 `
@@ -53,15 +76,6 @@ mutation editAuthor($name: String!, $setBornTo: Int!) {
   }
 }
 `
-
-export const CURRENT_USER = gql`
-query {
-  me{
-    username
-    id
-  }
-}
-`
 export const LOGIN = gql`
 mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password)  {
@@ -69,3 +83,4 @@ mutation login($username: String!, $password: String!) {
     }
   }
 `
+

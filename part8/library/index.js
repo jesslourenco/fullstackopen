@@ -118,6 +118,7 @@ const typeDefs = gql`
   }
   type User {
   username: String!
+  favGenre: String!
   id: ID!
   }
   type Token {
@@ -147,6 +148,7 @@ const typeDefs = gql`
 
     createUser(
     username: String!
+    favGenre: String!
     ): User
 
     login(
@@ -162,7 +164,7 @@ const resolvers = {
 
     bookCount: async () => Book.collection.countDocuments(),
 
-    allBooks: async (root, args) => {
+    allBooks: async (root, args, context) => {
 
       if (Object.keys(args).length === 0) return Book.find({}).populate('author')
 
@@ -189,7 +191,7 @@ const resolvers = {
       return response    */
     },   
 
-    me: (root, args, context) => context.currentUser
+    me: (root, args, context) => { return context.currentUser }
   },
 
   Mutation: {
@@ -246,7 +248,7 @@ const resolvers = {
     },
 
     createUser: async (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User({ username: args.username, favGenre: args.favGenre })
 
       return user.save()
         .catch(error => {
