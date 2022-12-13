@@ -1,13 +1,23 @@
-import { ApolloServer } from '@apollo/server';
-import { GraphQLError } from 'graphql';
+import { ApolloServer } from 'apollo-server-express';
+import { GraphQLError, execute, subscribe } from 'graphql';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import { WebSocketServer } from 'ws';
+import { gql } from 'graphql-tag'
+import { useServer } from 'graphql-ws/lib/use/ws'
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import http from 'http'
+import jwt from 'jsonwebtoken';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { gql } from 'graphql-tag';
 import { mongoose } from 'mongoose';
+import { PubSub } from 'graphql-subscriptions'
 import Book from './models/book.js';
 import Author from './models/author.js';
 import User from './models/user.js';
 import 'dotenv/config';
-import jwt from 'jsonwebtoken';
+
 
 /* let authors = [
   {
@@ -90,7 +100,7 @@ let books = [
 const MONGODB_URI = process.env.MONGODB_URI
 const JWT_SECRET = process.env.JWT_SECRET
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', false); // get rid of mongoose7 warning in console
 
 console.log('connecting to...', MONGODB_URI)
 mongoose.connect(MONGODB_URI)
@@ -100,7 +110,6 @@ mongoose.connect(MONGODB_URI)
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
-
 
 const typeDefs = gql`
   type Book {
@@ -156,7 +165,12 @@ const typeDefs = gql`
       password: String!
     ): Token
   }
+
+  type Subscription {
+    addedBook: Book!
+  }
 `
+const pubsub = new PubSub()
 
 const resolvers = {
   Query: {
@@ -189,7 +203,7 @@ const resolvers = {
         return a
       })
       return response    */
-    },   
+    },
 
     me: (root, args, context) => { return context.currentUser }
   },
@@ -197,8 +211,7 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args, context) => {
 
-      const currentUser = context.currentUser
-      if (!currentUser) {
+      if (!context.currentUser) {
         throw new GraphQLError('not authenticated')
       }
 
@@ -231,8 +244,9 @@ const resolvers = {
             code: BAD_USER_INPUT,
           })
         })
-      return await book.populate('author')
 
+      pubsub.publish('ADDED_BOOK', { addedBook: book.populate('author') })
+      return await book.populate('author')
     },
 
     editAuthor: async (root, args, context) => {
@@ -272,28 +286,63 @@ const resolvers = {
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
-  }
+  },
+  Subscription: {
+    addedBook: {
+    subscribe: () => pubsub.asyncIterator('ADDED_BOOK')
+    },
+  },
 }
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
+const start = async () => {
+  const app = express()
+  const httpServer = http.createServer(app)
 
-const { url } = await startStandaloneServer(server, {
-  context: async ({ req }) => {
-    const auth = req ? req.headers.authorization : null
-    if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(
-        auth.substring(7), JWT_SECRET
-      )
-      const currentUser = await
-        User.findById(decodedToken.id)
-      return { currentUser }
-    }
-  },
-  listen: { port: 4000 },
-})
+  const schema = makeExecutableSchema({ typeDefs, resolvers })
+
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/',
+  })
+  const serverCleanup = useServer({ schema }, wsServer)
+
+  const server = new ApolloServer({
+    schema,
+    context: async ({ req }) => {
+      const auth = req ? req.headers.authorization : null
+      if (auth && auth.toLowerCase().startsWith('bearer ')) {
+        const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
+        const currentUser = await User.findById(decodedToken.id)
+        return { currentUser }
+      }
+    },
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose()
+          },
+        }
+      },
+    },
+    ],
+  })
+
+  await server.start()
+
+  server.applyMiddleware({
+    app,
+    path: '/',
+  })
+
+  const PORT = 4000
+
+  await new Promise(resolve => httpServer.listen(PORT, resolve))
+  console.log(`🚀 Server is running on http://localhost:${PORT}`)
+
+}
+
+start()
 
 
-console.log(`🚀  Server ready at: ${url}`);
