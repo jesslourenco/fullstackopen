@@ -122,7 +122,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     born: Int
-    # bookCount: Int
+    bookCount: Int
     id: ID!
   }
   type User {
@@ -193,16 +193,14 @@ const resolvers = {
     },
 
     allAuthors: async () => {
-
-      return Author.find({})
-
-      /* inactive for now
-      const response =  authors.map((a) => {
-        const count = books.filter((b) => b.author === a.name).length
+      const allAuthors = await Author.find({})
+      const allBooks = await Book.find({}).populate('author')
+      const result =  allAuthors.map((a) => {
+        const count = allBooks.filter((b) => b.author.name === a.name).length
         a.bookCount = count
-        return a
-      })
-      return response    */
+        return a })
+
+      return result
     },
 
     me: (root, args, context) => { return context.currentUser }

@@ -10,6 +10,9 @@ const schema = new mongoose.Schema({
   born: {
     type: Number,
   },
+  bookCount: {
+    type: Number,
+  }
 })
 
 export default mongoose.model('Author', schema)
