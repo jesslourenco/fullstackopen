@@ -1,3 +1,31 @@
+interface Arguments {
+    target: number;
+    hours: number[]
+}
+
+const parseArguments = (input: string[]): Arguments => {
+    const args = input.slice(2,input.length);
+
+    const checkArgs = args.every(e => {
+        return !isNaN(Number(e));
+    });
+
+    if(!checkArgs) throw new Error('Please provide numbers only!');
+
+    let target = null;
+    let hours = [];
+
+    for(let i = 0; i < args.length; i++){
+        if( i === 0){
+            target = Number(args[i]);
+        } else {
+            hours.push(Number(args[i]))
+        }
+    }
+
+    return { hours, target };
+}
+
 interface Result {
     periodLength: number,
     trainingDays: number,
@@ -51,4 +79,15 @@ const calculateExercises = (hours: number[], target: number): Result => {
     });
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+
+try{
+    const { hours, target } = parseArguments(process.argv);
+    console.log(calculateExercises(hours, target))
+} catch (error: unknown){
+    if (error instanceof Error){
+        console.log('Error: ', error.message);
+    }
+}
+
+
