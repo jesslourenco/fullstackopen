@@ -1,31 +1,3 @@
-interface Arguments {
-    target: number;
-    hours: number[]
-}
-
-const parseArguments = (input: string[]): Arguments => {
-    const args = input.slice(2,input.length);
-
-    const checkArgs = args.every(e => {
-        return !isNaN(Number(e));
-    });
-
-    if(!checkArgs) throw new Error('Please provide numbers only!');
-
-    let target = 0;
-    const hours = [];
-
-    for(let i = 0; i < args.length; i++){
-        if( i === 0){
-            target = Number(args[i]);
-        } else {
-            hours.push(Number(args[i]));
-        }
-    }
-
-    return { hours, target };
-};
-
 interface Result {
     periodLength: number,
     trainingDays: number,
@@ -80,6 +52,38 @@ const calculateExercises = (hours: number[], target: number): Result => {
     });
 };
 
+export default calculateExercises;
+
+/* inactive command line 
+
+interface Arguments {
+    target: number;
+    hours: number[]
+}
+
+const parseArguments = (input: string[]): Arguments => {
+    const args = input.slice(2,input.length);
+
+    const checkArgs = args.every(e => {
+        return !isNaN(Number(e));
+    });
+
+    if(!checkArgs) throw new Error('Please provide numbers only!');
+
+    let target = 0;
+    const hours = [];
+
+    for(let i = 0; i < args.length; i++){
+        if( i === 0){
+            target = Number(args[i]);
+        } else {
+            hours.push(Number(args[i]));
+        }
+    }
+
+    return { hours, target };
+};
+
 try{
     const { hours, target } = parseArguments(process.argv);
     console.log(calculateExercises(hours, target));
@@ -87,6 +91,6 @@ try{
     if (error instanceof Error){
         console.log('Error: ', error.message);
     }
-}
+} */
 
 
