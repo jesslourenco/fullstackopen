@@ -12,26 +12,26 @@ const parseArguments = (input: string[]): Arguments => {
 
     if(!checkArgs) throw new Error('Please provide numbers only!');
 
-    let target = null;
-    let hours = [];
+    let target = 0;
+    const hours = [];
 
     for(let i = 0; i < args.length; i++){
         if( i === 0){
             target = Number(args[i]);
         } else {
-            hours.push(Number(args[i]))
+            hours.push(Number(args[i]));
         }
     }
 
     return { hours, target };
-}
+};
 
 interface Result {
     periodLength: number,
     trainingDays: number,
     success: boolean,
     rating: number,
-    ratingDescription: string,
+    ratingDescription: string | undefined,
     target: number,
     average: number
 }
@@ -45,9 +45,9 @@ const calculateScore = (average: number, target: number): number => {
     } else {
         return 3;
     }
-}
+};
 
-const getDescription = (rating: number): string => {
+const getDescription = (rating: number): string | undefined => {
     switch(rating){
         case 1:
             return 'you were far from achieving your target';
@@ -55,9 +55,10 @@ const getDescription = (rating: number): string => {
             return 'not bad but could be better';
         case 3:
             return 'good job! You either achieved your target or are very close!';
-
+        default:
+            return undefined;
     }
-}
+};
 
 const calculateExercises = (hours: number[], target: number): Result => {
     const periodLength = hours.length;
@@ -79,11 +80,9 @@ const calculateExercises = (hours: number[], target: number): Result => {
     });
 };
 
-// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
-
 try{
     const { hours, target } = parseArguments(process.argv);
-    console.log(calculateExercises(hours, target))
+    console.log(calculateExercises(hours, target));
 } catch (error: unknown){
     if (error instanceof Error){
         console.log('Error: ', error.message);

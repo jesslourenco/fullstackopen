@@ -1,4 +1,4 @@
-export const calculateBmi = (height: number, weight: number): string => {
+const calculateBmi = (height: number, weight: number): string => {
     const result = (weight / (height * height)) * 10000;
 
     if (result < 16.0) {
@@ -23,16 +23,18 @@ export const calculateBmi = (height: number, weight: number): string => {
         return 'Obese Class II';
     }
     else {
-        return 'Obese Class III'
+        return 'Obese Class III';
     }
 };
+
+export default calculateBmi;
 
 /* code for command line
 
 interface Args {
     height: number;
     weight: number
-}
+};
 
 const parseArgs = (input: string[]): Args => {
     if (input.length < 4) throw new Error('Not enough arguments');
