@@ -1,21 +1,4 @@
-interface Args {
-    height: number;
-    weight: number
-}
-
-const parseArgs = (input: string[]): Args => {
-    if (input.length < 4) throw new Error('Not enough arguments');
-    if (input.length > 4) throw new Error('Too many arguments');
-    if (isNaN(Number(input[2])) || isNaN(Number(input[3]))) 
-        throw new Error('Please provide numbers only!');
-
-    const height = Number(input[2]);
-    const weight = Number(input[3]);
-
-    return { height, weight };
-}
-
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const result = (weight / (height * height)) * 10000;
 
     if (result < 16.0) {
@@ -42,10 +25,27 @@ const calculateBmi = (height: number, weight: number): string => {
     else {
         return 'Obese Class III'
     }
+};
+
+/* code for command line
+
+interface Args {
+    height: number;
+    weight: number
 }
 
-//console.log(calculateBmi(180, 74));
-//console.log(calculateBmi(163, 73));
+const parseArgs = (input: string[]): Args => {
+    if (input.length < 4) throw new Error('Not enough arguments');
+    if (input.length > 4) throw new Error('Too many arguments');
+    if (isNaN(Number(input[2])) || isNaN(Number(input[3]))) 
+        throw new Error('Please provide numbers only!');
+
+    const height = Number(input[2]);
+    const weight = Number(input[3]);
+
+    return { height, weight };
+}
+
 
 try{
     const { height, weight } = parseArgs(process.argv);
@@ -54,4 +54,4 @@ try{
     if (error instanceof Error){
         console.log('Error: ', error.message);
     }
-}
+} */
