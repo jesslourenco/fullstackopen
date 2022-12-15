@@ -1,4 +1,4 @@
-import { NewPatient } from "./types";
+import { NewPatient, Gender } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseReqToNewPatient = (obj: any): NewPatient => {
@@ -6,7 +6,7 @@ export const parseReqToNewPatient = (obj: any): NewPatient => {
         name: parseString(obj.name), 
         dateOfBirth: parseDoB(obj.dateOfBirth),
         ssn: parseString(obj.ssn),
-        gender: parseString(obj.dateOfBirth), 
+        gender: parseGender(obj.gender), 
         occupation: parseString(obj.occupation)
     };
     return newPatient;
@@ -18,6 +18,12 @@ const isString = (text: unknown): text is string => {
 
 const isDate = (text: string): boolean => {
     return Boolean(Date.parse(text));
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isGender = (value: any): value is Gender => { // "value is Gender" returns value in type Gender
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return Object.values(Gender).includes(value);
 };
 
 const parseString = (value: unknown): string => {
@@ -34,12 +40,12 @@ const parseDoB = (dob: unknown): string => {
     return dob;
 };
 
-/*const parseGender = (gender: unknown): string => {
-    if (!gender || !isString(gender)) {
-        throw new Error('Incorrect or missing comment');
+const parseGender = (gender: unknown): Gender => {
+    if (!gender || !isGender(gender)) {
+        throw new Error('Incorrect or missing gender');
       }
     return gender;
-};*/
+};
 
 
 
