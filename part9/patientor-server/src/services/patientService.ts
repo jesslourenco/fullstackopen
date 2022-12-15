@@ -1,5 +1,7 @@
 import patientData from '../../data/patients.json';
 import { Patient } from '../types';
+import { v1 as uuid } from 'uuid';
+import { parseReqToNewPatient } from '../utils';
 
 const patients: Array<Patient> = patientData;
 
@@ -9,4 +11,14 @@ const getNonSensitivePatients= (): Omit<Patient, 'ssn'>[] => {
     }));
 };
 
-export default {getNonSensitivePatients,};
+const addPatient = (req: unknown): Patient => {
+    const newPatient = parseReqToNewPatient(req);
+    const patient = {
+        id: uuid(),
+        ...newPatient
+    };
+    patients.push(patient);
+    return patient;
+};
+
+export default {getNonSensitivePatients, addPatient};
