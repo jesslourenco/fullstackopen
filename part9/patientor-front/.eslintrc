@@ -31,6 +31,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "/Users/jess/Documents/git-repos/fullstackopen/part9/patientor-front/tsconfig.json"
   }
 }

@@ -7,7 +7,8 @@ export const parseReqToNewPatient = (obj: any): NewPatient => {
         dateOfBirth: parseDoB(obj.dateOfBirth),
         ssn: parseString(obj.ssn),
         gender: parseGender(obj.gender), 
-        occupation: parseString(obj.occupation)
+        occupation: parseString(obj.occupation),
+        entries: [],
     };
     return newPatient;
 };
