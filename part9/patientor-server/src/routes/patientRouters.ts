@@ -9,7 +9,7 @@ router.get('/api/patients', (_req, res) => {
 
 router.get('/api/patients/:id', (req, res) => {
   const patient = patientService.getPatient(req.params.id);
-  res.json(patient);
+  res.send(patient);
 });
 
 router.post('/api/patients', (req, res) => {
