@@ -1,14 +1,14 @@
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, Entry, entry } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseReqToNewPatient = (obj: any): NewPatient => {
     const newPatient: NewPatient = {
-        name: parseString(obj.name), 
+        name: parseString(obj.name),
         dateOfBirth: parseDoB(obj.dateOfBirth),
         ssn: parseString(obj.ssn),
-        gender: parseGender(obj.gender), 
+        gender: parseGender(obj.gender),
         occupation: parseString(obj.occupation),
-        entries: [],
+        entries: parseEntries(obj.entries),
     };
     return newPatient;
 };
@@ -30,23 +30,39 @@ const isGender = (value: any): value is Gender => { // "value is Gender" returns
 const parseString = (value: unknown): string => {
     if (!value || !isString(value)) {
         throw new Error('Incorrect or missing value');
-      }
+    }
     return value;
 };
 
 const parseDoB = (dob: unknown): string => {
     if (!dob || !isString(dob) || !isDate(dob)) {
         throw new Error('Incorrect or missing date of birth');
-      }
+    }
     return dob;
 };
 
 const parseGender = (gender: unknown): Gender => {
     if (!gender || !isGender(gender)) {
         throw new Error('Incorrect or missing gender');
-      }
+    }
     return gender;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isEntry = (list: Entry[]): list is Entry[] => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+    const res = list.map((e:any) => entry.includes(e.type));
+    if(res.includes(false))return false;
+    return true;
+};
+
+const isTypedArray = (list: unknown): list is Entry[] => {
+    return Array.isArray(list);
+};
 
 
+const parseEntries = (list?: unknown): Entry[]  => {
+    if(!isTypedArray(list) || !isEntry(list)) { throw new Error('Incorrect entry'); } else {
+        return list; 
+    }  
+};

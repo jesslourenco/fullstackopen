@@ -1,4 +1,4 @@
-import patientData from '../../data/patients.json';
+import patientData from '../../data/patients';
 import { Patient } from '../types';
 import { v1 as uuid } from 'uuid';
 import { parseReqToNewPatient } from '../utils';
@@ -7,6 +7,7 @@ const patients: Array<Patient> = patientData.map(p => {
     // the map is needed since data for Gender comes in json as string
     const obj = parseReqToNewPatient(p) as Patient;
     obj.id = p.id;
+    console.log(obj);
     return obj;
 });
 

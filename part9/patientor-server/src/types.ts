@@ -16,10 +16,51 @@ export interface Patient {
     ssn: string;
     gender: Gender;
     occupation: string;
-    entries: Entry[];
+    entries?: Entry[];
 }
 
 export type NewPatient = Omit<Patient, 'id'>;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Entry {}
+export interface Discharge{
+    date: string;
+    criteria: string;
+}
+
+export interface SickLeave{
+    startDate: string;
+    endDate: string;
+}
+
+interface BaseEntry {
+    id: string;
+    description: string;
+    date: string;
+    specialist: string;
+    diagnosisCodes?: Array<Diagnose['code']>;
+  }
+
+  export enum HealthCheckRating {
+    "Healthy" = 0,
+    "LowRisk" = 1,
+    "HighRisk" = 2,
+    "CriticalRisk" = 3
+  }
+
+interface OccupationalHealthcare extends BaseEntry {
+    type: "OccupationalHealthcare"
+    employerName: string;
+    sickLeave?: SickLeave;
+
+}
+interface Hospital extends BaseEntry {
+    type: "Hospital";
+    discharge: Discharge;
+}
+interface HealthCheck extends BaseEntry {
+    type: "HealthCheck";
+    healthCheckRating: HealthCheckRating;
+}
+
+export type Entry =  OccupationalHealthcare | Hospital | HealthCheck;
+
+export const entry = ["OccupationalHealthcare", "Hospital", "HealthCheck"];
