@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { setPatient, useStateValue } from "../state";
 import { apiBaseUrl } from "../constants";
-import { Patient } from "../types";
+import { Patient, Entry } from "../types";
 
 const parseString = (value: unknown): string => {
     const isString = (text: unknown): text is string => {
@@ -21,6 +21,7 @@ const PatientPage = () => {
     const [{ patients }, dispatch] = useStateValue();
 
     const patientPage = (): JSX.Element => {
+        console.log(patients);
         return (
             <>
                 {Object.values(patients).map((patient: Patient) => (
@@ -29,7 +30,18 @@ const PatientPage = () => {
                         {patient.dateOfBirth}<br></br>
                         {patient.gender}<br></br>
                         {patient.occupation}
+                        <br></br>
 
+                        {patient.entries
+                            ? patient.entries.map((e: Entry) => {
+                                return (<div key={e.id}>
+                                    <h4>Diagnosis:</h4>
+                                    {e.date} : {e.description} 
+                                    <p>{e.diagnosisCodes?.map(c => <li key={c}> {c} </li>)}</p>
+                                </div>);
+                            }
+                            )
+                            : ''}
                     </div>))}
             </>
         );
