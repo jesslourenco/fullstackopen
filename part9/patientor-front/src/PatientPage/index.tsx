@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { setPatient, useStateValue } from "../state";
 import { apiBaseUrl } from "../constants";
-import { Patient, Entry } from "../types";
+import { Patient, Entry, Diagnosis } from "../types";
 
 const parseString = (value: unknown): string => {
     const isString = (text: unknown): text is string => {
@@ -16,12 +16,19 @@ const parseString = (value: unknown): string => {
     return value;
 };
 
+const hasDiagnoseCodes = (entries: Entry[]): boolean => {
+    if (entries.length === 0) return false;
+    for (const e of entries) {
+        if ('diagnosisCodes' in e) return true;
+    }
+    return false;
+};
+
 const PatientPage = () => {
     const id = parseString(useParams().id);
     const [{ patients }, dispatch] = useStateValue();
 
     const patientPage = (): JSX.Element => {
-        console.log(patients);
         return (
             <>
                 {Object.values(patients).map((patient: Patient) => (
@@ -36,7 +43,7 @@ const PatientPage = () => {
                             ? patient.entries.map((e: Entry) => {
                                 return (<div key={e.id}>
                                     <h4>Diagnosis:</h4>
-                                    {e.date} : {e.description} 
+                                    {e.date} : {e.description}
                                     <p>{e.diagnosisCodes?.map(c => <li key={c}> {c} </li>)}</p>
                                 </div>);
                             }
@@ -55,6 +62,22 @@ const PatientPage = () => {
         try {
             const { data: patient } = await axios.get<Patient>(
                 `${apiBaseUrl}/patients/${id}`);
+            if (hasDiagnoseCodes(patient.entries)) {
+                const { data: diagnosis } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
+                const newCodes: string[] = [];
+
+                patient.entries.forEach(e => {
+                    return e.diagnosisCodes?.map((code) => {
+                        const info = diagnosis.find(diag => diag.code === code);
+                        info
+                        ? newCodes.push(`${info.code}: ${info.name}`)
+                        : () => {throw new Error(`Diagnose code ${code} does not exist in database!`);};
+                    });
+                });
+
+                patient.entries.forEach(e => 'diagnosisCodes' in e ? e.diagnosisCodes = newCodes : e);      
+            }
+            
             dispatch(setPatient(patient));
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
