@@ -1,9 +1,10 @@
-import React from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { setPatient, useStateValue } from "../state";
 import { apiBaseUrl } from "../constants";
 import { Patient, Entry, Diagnosis } from "../types";
+import EntryDetails from './EntryDetails';
+
 
 const parseString = (value: unknown): string => {
     const isString = (text: unknown): text is string => {
@@ -24,6 +25,8 @@ const hasDiagnoseCodes = (entries: Entry[]): boolean => {
     return false;
 };
 
+
+
 const PatientPage = () => {
     const id = parseString(useParams().id);
     const [{ patients }, dispatch] = useStateValue();
@@ -40,15 +43,11 @@ const PatientPage = () => {
                         <br></br>
 
                         {patient.entries
-                            ? patient.entries.map((e: Entry) => {
-                                return (<div key={e.id}>
-                                    <h4>Diagnosis:</h4>
-                                    {e.date} : {e.description}
-                                    <p>{e.diagnosisCodes?.map(c => <li key={c}> {c} </li>)}</p>
-                                </div>);
+                            ? patient.entries.map(e => {
+                                return <EntryDetails entry={e} key={e.id}/>;
                             }
                             )
-                            : ''}
+                            : null}
                     </div>))}
             </>
         );
@@ -70,14 +69,14 @@ const PatientPage = () => {
                     return e.diagnosisCodes?.map((code) => {
                         const info = diagnosis.find(diag => diag.code === code);
                         info
-                        ? newCodes.push(`${info.code}: ${info.name}`)
-                        : () => {throw new Error(`Diagnose code ${code} does not exist in database!`);};
+                            ? newCodes.push(`${info.code}: ${info.name}`)
+                            : () => { throw new Error(`Diagnose code ${code} does not exist in database!`); };
                     });
                 });
 
-                patient.entries.forEach(e => 'diagnosisCodes' in e ? e.diagnosisCodes = newCodes : e);      
+                patient.entries.forEach(e => 'diagnosisCodes' in e ? e.diagnosisCodes = newCodes : e);
             }
-            
+
             dispatch(setPatient(patient));
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
