@@ -61,7 +61,7 @@ const PatientPage = () => {
         try {
             const { data: patient } = await axios.get<Patient>(
                 `${apiBaseUrl}/patients/${id}`);
-            if (hasDiagnoseCodes(patient.entries)) {
+            if (patient.entries && hasDiagnoseCodes(patient.entries)) {
                 const { data: diagnosis } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
                 const newCodes: string[] = [];
 

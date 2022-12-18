@@ -19,7 +19,7 @@ export interface Patient {
     entries?: Entry[];
 }
 
-export type NewPatient = Omit<Patient, 'id'>;
+export type NewPatient = Omit<Patient, 'id' | "entries">;
 
 export interface Discharge{
     date: string;
@@ -46,17 +46,17 @@ interface BaseEntry {
     "CriticalRisk" = 3
   }
 
-interface OccupationalHealthcare extends BaseEntry {
+export interface OccupationalHealthcare extends BaseEntry {
     type: "OccupationalHealthcare"
     employerName: string;
     sickLeave?: SickLeave;
 
 }
-interface Hospital extends BaseEntry {
+export interface Hospital extends BaseEntry {
     type: "Hospital";
     discharge: Discharge;
 }
-interface HealthCheck extends BaseEntry {
+export interface HealthCheck extends BaseEntry {
     type: "HealthCheck";
     healthCheckRating: HealthCheckRating;
 }
@@ -64,3 +64,7 @@ interface HealthCheck extends BaseEntry {
 export type Entry =  OccupationalHealthcare | Hospital | HealthCheck;
 
 export const entry = ["OccupationalHealthcare", "Hospital", "HealthCheck"];
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type NewEntry = UnionOmit<Entry, 'id'>;

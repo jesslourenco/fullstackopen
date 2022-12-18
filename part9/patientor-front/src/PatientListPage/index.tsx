@@ -8,7 +8,7 @@ import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { addPatient, useStateValue } from "../state";
+import { addPatient, setPatientList, useStateValue } from "../state";
 import { TableCell } from "@material-ui/core";
 import { TableRow } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
@@ -25,6 +25,21 @@ const PatientListPage = () => {
     setModalOpen(false);
     setError(undefined);
   };
+
+  React.useEffect(() => {
+    const fetchPatientList = async () => {
+      try {
+        const { data: patientListFromApi } = await axios.get<Patient[]>( 
+        // axios type does not guarantee the data will be correct. Requires validators, type guards, etc
+          `${apiBaseUrl}/patients`
+        );
+        dispatch(setPatientList(patientListFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    void fetchPatientList();
+  }, [dispatch]);
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
