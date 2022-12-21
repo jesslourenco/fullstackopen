@@ -80,7 +80,15 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       }}
       onSubmit={onSubmit}
       validate={(values) => {
-        return console.log('validation code...');
+        const requiredError = "Field is required";
+        const errors: { [field: string]: string } = {};
+        if (!values.description || !values.specialist || !values.type || !values.date) errors.name = requiredError;
+        
+        if (values.type === EntryTypes.HealthCheck && !values.healthCheckRating) errors.name = requiredError;
+
+        if (values.type === EntryTypes.Hospital && !values.discharge) errors.name = requiredError;
+
+        if(values.type === EntryTypes.OccupationalHealthcare && !values.employerName) errors.name = requiredError;
       }}>
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         return (
