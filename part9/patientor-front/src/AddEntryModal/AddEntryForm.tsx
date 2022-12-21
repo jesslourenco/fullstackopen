@@ -15,11 +15,11 @@ interface Props {
   onCancel: () => void;
   onSubmit: (values: NewEntry) => void
 }
- const typeOptions: Option[] = [
+const typeOptions: Option[] = [
   { value: EntryTypes.Hospital, label: "Hospital" },
   { value: EntryTypes.OccupationalHealthcare, label: "OccupationalHealthcare" },
   { value: EntryTypes.HealthCheck, label: "HealthCheck" },
-]; 
+];
 
 const ratingOptions: Option[] = [
   { value: HealthCheckRating.Healthy, label: 'Healthy' },
@@ -30,22 +30,35 @@ const ratingOptions: Option[] = [
 
 
 const loadEntryFields = (entryType: EntryTypes) => {
-  switch(entryType){
-  case EntryTypes.HealthCheck:
-    return(
-      <SelectField
+  switch (entryType) {
+    case EntryTypes.HealthCheck:
+      return (
+        <SelectField
           label="Health Check Rating"
           name="healthCheckRating"
           options={ratingOptions}
         />
-    );
-  case EntryTypes.Hospital:
-    return(<></>);
-  case EntryTypes.OccupationalHealthcare:
-    return(<></>);
-  default:
-    return null; 
-}};
+      );
+    case EntryTypes.Hospital:
+      return (<>
+        <Field
+          label="Discharge Date"
+          placeholder="YYYY-MM-DD"
+          name="dischargeDate"
+          component={TextField}
+        />
+        <Field
+          label="Criteria"
+          name="dischargeCriteria"
+          component={TextField}
+        />
+      </>);
+    case EntryTypes.OccupationalHealthcare:
+      return (<></>);
+    default:
+      return null;
+  }
+};
 
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
@@ -56,7 +69,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 
     const fetchDiagnosisList = async () => {
       try {
-        const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>( 
+        const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>(
           `${apiBaseUrl}/diagnoses`
         );
         dispatch(setDiagnosisList(diagnosisListFromApi));
@@ -67,8 +80,8 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     void fetchDiagnosisList();
   }, [dispatch]);
 
-  
-  return(
+
+  return (
     <Formik
       initialValues={{
         description: '',
@@ -83,12 +96,12 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         const requiredError = "Field is required";
         const errors: { [field: string]: string } = {};
         if (!values.description || !values.specialist || !values.type || !values.date) errors.name = requiredError;
-        
+
         if (values.type === EntryTypes.HealthCheck && !values.healthCheckRating) errors.name = requiredError;
 
         if (values.type === EntryTypes.Hospital && !values.discharge) errors.name = requiredError;
 
-        if(values.type === EntryTypes.OccupationalHealthcare && !values.employerName) errors.name = requiredError;
+        if (values.type === EntryTypes.OccupationalHealthcare && !values.employerName) errors.name = requiredError;
       }}>
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         return (
