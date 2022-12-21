@@ -54,7 +54,25 @@ const loadEntryFields = (entryType: EntryTypes) => {
         />
       </>);
     case EntryTypes.OccupationalHealthcare:
-      return (<></>);
+      return (<>
+        <Field
+          label="EmployerName"
+          name="employerName"
+          component={TextField}
+        />
+        <Field
+          label="Sick Leave Start Date"
+          placeholder="YYYY-MM-DD"
+          name="sickLeaveStart"
+          component={TextField}
+        />
+        <Field
+          label="Sick Leave End Date"
+          placeholder="YYYY-MM-DD"
+          name="sickLeaveEnd"
+          component={TextField}
+        />
+      </>);
     default:
       return null;
   }

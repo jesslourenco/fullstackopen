@@ -1,4 +1,4 @@
-import { NewPatient, Gender, Entry, entry, Patient, NewEntry, Discharge, HealthCheckRating,  } from "./types";
+import { NewPatient, Gender, Entry, entry, Patient, NewEntry, Discharge, HealthCheckRating, SickLeave,  } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseReqToNewPatient = (obj: any): NewPatient => {
@@ -49,6 +49,7 @@ export const parseEntry = (obj: any): NewEntry | null => {
             let entryO: NewEntry = {
                 type: "OccupationalHealthcare",
                 employerName: parseString(obj.employerName),
+                sickLeave: parseLeave(obj.sickLeaveStart, obj.sickLeaveEnd),
                 ...base
             };
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -97,6 +98,13 @@ const parseDischarge = (date: unknown, criteria: unknown): Discharge => {
 const isDischarge = (value: unknown): value is Discharge => {
     if (!(typeof value === 'object')) return false;
     return true;
+};
+
+const parseLeave = (start: unknown, end: unknown): SickLeave | undefined=> {
+    if(!start || !end) return undefined;
+    if(!isString(start) || !isString(end)) throw new Error('malformatted dates');
+    const sickLeave = {startDate: start, endDate: end};
+    return sickLeave; 
 };
 
 const isString = (text: unknown): text is string => {
