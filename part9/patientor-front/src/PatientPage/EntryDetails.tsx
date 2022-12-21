@@ -17,7 +17,7 @@ const EntryDetails = ({ entry }: PropsEntry) => {
             return <HealthCheckEntry entry={entry} />;
         case 'Hospital':
             return <HospitalEntry entry={entry} />;
-        case 'OccupationalHealthCare':
+        case 'OccupationalHealthcare':
             return <OccupationalHealthEntry entry={entry} />;
         default:
             return null;

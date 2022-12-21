@@ -1,4 +1,4 @@
-import { NewPatient, Gender, Entry, entry, Patient, NewEntry, Discharge, HealthCheckRating,  } from "./types";
+import { NewPatient, Gender, Entry, entry, Patient, NewEntry, Discharge, HealthCheckRating, SickLeave,  } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseReqToNewPatient = (obj: any): NewPatient => {
@@ -41,7 +41,7 @@ export const parseEntry = (obj: any): NewEntry | null => {
         case "Hospital":
             const entryH: NewEntry = {
                 type: "Hospital",
-                discharge: parseDischarge(obj.discharge),
+                discharge: parseDischarge(obj.dischargeDate, obj.dischargeCriteria),
                 ...base
             };
             return entryH;
@@ -49,6 +49,7 @@ export const parseEntry = (obj: any): NewEntry | null => {
             let entryO: NewEntry = {
                 type: "OccupationalHealthcare",
                 employerName: parseString(obj.employerName),
+                sickLeave: parseLeave(obj.sickLeaveStart, obj.sickLeaveEnd),
                 ...base
             };
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -84,17 +85,26 @@ const parseRating = (value: unknown): HealthCheckRating => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-const parseDischarge = (value: unknown): Discharge => {
-    if(!value || !isDischarge(value)) throw new Error('Incorrect or missing discharge data');
-    return value;
+const parseDischarge = (date: unknown, criteria: unknown): Discharge => {
+    if(!date || !criteria || !isString(date) || !isString(criteria) || !isDate(date)) throw new Error
+    ('Incorrect or missing discharge data');
+    const discharge = {date: date, criteria: criteria};
+    if (!isDischarge(discharge)) throw new Error('Something is wrong with discharge data');
+    return discharge;
 
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isDischarge = (value: any): value is Discharge => {
-    if(!(typeof(value) === 'object')) return false;
-    if(!value.date || !value.criteria) return false;
+const isDischarge = (value: unknown): value is Discharge => {
+    if (!(typeof value === 'object')) return false;
     return true;
+};
+
+const parseLeave = (start: unknown, end: unknown): SickLeave | undefined=> {
+    if(!start || !end) return undefined;
+    if(!isString(start) || !isString(end)) throw new Error('malformatted dates');
+    const sickLeave = {startDate: start, endDate: end};
+    return sickLeave; 
 };
 
 const isString = (text: unknown): text is string => {

@@ -47,7 +47,7 @@ export enum HealthCheckRating {
 
 export enum EntryTypes {
   Hospital = "Hospital",
-  OccupationalHealthcare = "OccupationalHealthCare",
+  OccupationalHealthcare = "OccupationalHealthcare",
   HealthCheck = "HealthCheck"
 }
 
