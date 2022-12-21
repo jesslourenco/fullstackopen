@@ -72,12 +72,11 @@ export const parseEntry = (obj: any): NewEntry | null => {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isRating = (value: any): value is HealthCheckRating => { // "value is Gender" returns value in type Gender
-    console.log(value);
     return Object.values(HealthCheckRating).includes(Number(value));
 };
 
 const parseRating = (value: unknown): HealthCheckRating => {
-    if (!value || !isRating(value)) {
+    if (value === null || value === undefined || !isRating(value)) {
         throw new Error('Incorrect or missing rating');
     }
     return Number(value);

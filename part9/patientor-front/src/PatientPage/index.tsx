@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom';
 import axios from "axios";
-import { setPatient, useStateValue } from "../state";
+import React from 'react';
+import { addEntry, setPatient, useStateValue } from "../state";
 import { apiBaseUrl } from "../constants";
-import { Patient, Entry, Diagnosis } from "../types";
+import { Patient, Entry, Diagnosis, NewEntry } from "../types";
 import EntryDetails from './EntryDetails';
+import { Button } from "@material-ui/core";
+import AddEntryModal from '../AddEntryModal';
 
 
 const parseString = (value: unknown): string => {
@@ -29,9 +32,36 @@ const hasDiagnoseCodes = (entries: Entry[]): boolean => {
 
 const PatientPage = () => {
     const id = parseString(useParams().id);
-    const [{ patients }, dispatch] = useStateValue();
+    const [{ patients}, dispatch] = useStateValue();
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | undefined>();
+
+    const openModal = (): void => setModalOpen(true);
+
+    const closeModal = (): void => {
+        setModalOpen(false);
+        setError(undefined);
+    };
 
     const patientPage = (): JSX.Element => {
+        console.log(id);
+
+        const onSubmit = async(values: NewEntry) => {
+            try{
+              const {data: newEntry} = await axios.post<Entry>(
+                `${apiBaseUrl}/patients/${id}/entries`,
+                values
+              );
+              dispatch(addEntry(id, newEntry));
+              closeModal();
+            }catch (e: unknown) {
+              if (axios.isAxiosError(e)) {
+                  console.error(e?.response?.data || "Unrecognized axios error");
+              } else {
+                  console.error("Unknown error", e);
+              }
+          }
+        };
         return (
             <>
                 {Object.values(patients).map((patient: Patient) => (
@@ -44,11 +74,22 @@ const PatientPage = () => {
 
                         {patient.entries
                             ? patient.entries.map(e => {
-                                return <EntryDetails entry={e} key={e.id}/>;
+                                return <EntryDetails entry={e} key={e.id} />;
                             }
                             )
                             : null}
                     </div>))}
+
+                <AddEntryModal
+                    modalOpen={modalOpen}
+                    error={error}
+                    onSubmit={onSubmit}
+                    onClose={closeModal}
+                />
+
+                <Button variant="contained" onClick={() => openModal()}>
+                    Add New Entry
+                </Button>
             </>
         );
     };

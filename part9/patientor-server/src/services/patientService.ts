@@ -31,8 +31,10 @@ const getPatient = (id: string): Patient => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addEntry = (id:string, req: any): Entry => {
+    console.log(id);
     const index = patients.findIndex(p => p.id === id);
-    if(!index) throw new Error('patient does not exist');
+    console.log(index);
+    if(index === -1) throw new Error('patient does not exist');
     
     const patient = getPatient(id);
 

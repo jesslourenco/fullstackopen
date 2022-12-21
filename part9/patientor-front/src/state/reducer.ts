@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient } from "../types";
+import { Patient, Diagnosis, Entry } from "../types";
 
 export type Action =
   | {
@@ -13,7 +13,17 @@ export type Action =
   | {
     type: "SET_PATIENT";
     payload: Patient;
+  }
+  | {
+    type: "SET_DIAGNOSIS_LIST";
+    payload: Diagnosis[];
+  }
+  | {
+    type: "ADD_ENTRY";
+    payload: Entry;
+    patientId: string;
   };
+
 
   export const setPatientList = (patientListFromApi: Patient[]): Action => {
     return {type: "SET_PATIENT_LIST", payload: patientListFromApi}; 
@@ -23,8 +33,16 @@ export type Action =
     return {type: "ADD_PATIENT", payload: patient}; 
   };
 
+  export const addEntry = (patientId: string, entry: Entry): Action => {
+    return {type: "ADD_ENTRY", payload: entry, patientId}; 
+  };
+
   export const setPatient = (patient: Patient): Action => {
     return {type: "SET_PATIENT", payload: patient}; 
+  };
+
+  export const setDiagnosisList = (diagnoses: Diagnosis[]): Action => {
+    return { type: "SET_DIAGNOSIS_LIST", payload: diagnoses };
   };
 
 
@@ -49,12 +67,38 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
+    case "ADD_ENTRY":
+      return {
+        ...state,
+        patients: {
+          ...state.patients,
+          [action.patientId]: {
+            ...state.patients[action.patientId],
+            entries: [
+              ...state.patients[action.patientId].entries,
+              action.payload
+            ]
+          }
+        }
+      };
     case "SET_PATIENT":
       return {
         patients: {
-          [action.payload.id]: action.payload
-        }
+          [action.payload.id]: action.payload,
+        },
+        diagnoses: {...state.diagnoses}
       };
+      case "SET_DIAGNOSIS_LIST":
+        return {
+          ...state,
+          diagnoses: {
+            ...action.payload.reduce(
+              (memo, diagnosis) => ({ ...memo, [diagnosis.code]: diagnosis }),
+              {}
+            ),
+            ...state.diagnoses,
+          },
+        };
     default:
       return state;
   }
