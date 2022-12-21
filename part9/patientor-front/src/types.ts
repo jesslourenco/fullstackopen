@@ -1,0 +1,73 @@
+export interface Diagnosis {
+  code: string;
+  name: string;
+  latin?: string;
+}
+
+export enum Gender {
+  Male = "male",
+  Female = "female",
+  Other = "other"
+}
+
+export interface Patient {
+  id: string;
+  name: string;
+  occupation: string;
+  gender: Gender;
+  ssn: string;
+  dateOfBirth: string;
+  entries: Entry[];
+}
+
+export interface Discharge{
+  date: string;
+  criteria: string;
+}
+
+export interface SickLeave{
+  startDate: string;
+  endDate: string;
+}
+
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis['code']>;
+}
+
+export enum HealthCheckRating {
+  "Healthy" = 0,
+  "LowRisk" = 1,
+  "HighRisk" = 2,
+  "CriticalRisk" = 3
+}
+
+export enum EntryTypes {
+  Hospital = "Hospital",
+  OccupationalHealthcare = "OccupationalHealthCare",
+  HealthCheck = "HealthCheck"
+}
+
+export interface OccupationalHealthcare extends BaseEntry {
+  type: EntryTypes.OccupationalHealthcare
+  employerName: string;
+  sickLeave?: SickLeave;
+
+}
+export interface Hospital extends BaseEntry {
+  type: EntryTypes.Hospital;
+  discharge: Discharge;
+}
+export interface HealthCheck extends BaseEntry {
+  type: EntryTypes.HealthCheck;
+  healthCheckRating: HealthCheckRating;
+}
+
+export type Entry =  OccupationalHealthcare | Hospital | HealthCheck;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type NewEntry = UnionOmit<Entry, 'id'>;
