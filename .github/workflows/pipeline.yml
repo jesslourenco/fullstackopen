@@ -19,9 +19,10 @@ jobs:
       - name: lint
         working-directory: part11/full-stack-open-pokedex
         run: npm run eslint
-      - name: build
-        working-directory: part11/full-stack-open-pokedex
-        run: npm run build
       - name: test
         working-directory: part11/full-stack-open-pokedex
         run: npm run test
+      - name: build
+        working-directory: part11/full-stack-open-pokedex
+        run: npm run build
+      
