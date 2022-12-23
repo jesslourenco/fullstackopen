@@ -15,10 +15,10 @@ jobs:
           node-version: '18'
       - name: npm install
         working-directory: part11
-        run: ls -l
+        run: npm install
       - name: lint
         working-directory: part11/full-stack-open-pokedex
-        run: npm run eslint
+        run: ls -l
       - name: build
         working-directory: part11
         run: npm run build
