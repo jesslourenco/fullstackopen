@@ -19,9 +19,16 @@ jobs:
       - name: lint
         working-directory: part11/full-stack-open-pokedex
         run: npm run eslint
-      - name: test
+      - name: test unit
         working-directory: part11/full-stack-open-pokedex
         run: npm run test
+      - name: e2e test
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: part11/full-stack-open-pokedex
+          build: npm run build
+          start: npm run start-prod
+          wait-on: http://localhost:5000
       - name: build
         working-directory: part11/full-stack-open-pokedex
         run: npm run build
