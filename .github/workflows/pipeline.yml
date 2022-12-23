@@ -7,14 +7,15 @@ on:
 
 jobs:
   simple_deployment_pipe:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
         with:
           node-version: '18'
       - name: npm install
-        working-directory: full-stack-open-pokedex
-        run: npm install #install dependencies
+        # working-directory: full-stack-open-pokedex
+        run: npm install 
       - name: lint
         run: npm run eslint
       - name: build
