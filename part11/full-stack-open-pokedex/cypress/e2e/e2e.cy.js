@@ -1,5 +1,4 @@
 /* eslint-disable */
-const { it } = require('node:test')
 
 describe('Pokedex', function() {
   it('front page can be opened', function() {
@@ -9,7 +8,9 @@ describe('Pokedex', function() {
   })
 
   it('pokemon page has correct content', function() {
-    cy.visit('http://localhost:5000/pokemon/ivysaur')
+    cy.visit('http://localhost:5000')
+    cy.get('a').contains('ivysaur').click()
+    cy.url().should('include', '/pokemon/ivysaur')
     cy.contains('chlorophyll')
   })
 })
