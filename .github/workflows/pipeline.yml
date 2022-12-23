@@ -17,8 +17,11 @@ jobs:
         working-directory: part11
         run: ls -l
       - name: lint
+        working-directory: part11
         run: npm run eslint
       - name: build
+        working-directory: part11
         run: npm run build
       - name: test
+        working-directory: part11
         run: npm run test
