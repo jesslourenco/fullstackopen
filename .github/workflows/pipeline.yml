@@ -32,7 +32,7 @@ jobs:
           working-directory: part11/full-stack-open-pokedex
           build: npm run build
           start: npm run start-prod
-          wait-on: http://localhost:5000
+          wait-on: http://localhost:8080
       - name: build
         working-directory: part11/full-stack-open-pokedex
         run: npm run build
