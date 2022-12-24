@@ -2,9 +2,9 @@
 
 # Full Stack Open
 
-7/14 parts completed
+9/14 parts completed
 
-![50%](https://progress-bar.dev/50/?title=progress&width=500)
+![64%](https://progress-bar.dev/64/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -56,7 +56,7 @@ https://fullstackopen.com/en/about/
   - Communicating with server in a redux application
   - Connect
 
-### :pencil2: Part 7: React router, custom hooks, styling app with CSS and webpack
+### :white_check_mark: Part 7: React router, custom hooks, styling app with CSS and webpack
   - React-router
   - Custom hooks
   - More about styles
@@ -64,14 +64,14 @@ https://fullstackopen.com/en/about/
   - Class components, Misc
   - Extending the bloglist
 
-### Part 8: GraphQL
+### :white_check_mark: Part 8: GraphQL
   - GraphQL-server
   - React and GraphQL
   - Database and user administration
   - Login and updating the cache
   - Fragments and subscriptions
 
-### Part 9: Typescript
+### :white_check_mark: Part 9: Typescript
   - Background and Introduction
   - First Steps with Typescript
   - Typing express app
@@ -83,7 +83,7 @@ https://fullstackopen.com/en/about/
   - Communicating with server
   - Testing and extending our application
   
-### Part 11: CI/CD
+### :pencil2: Part 11: CI/CD
   - Introduction to CI/CD
   - Getting started with Github actions
   - Deployment
