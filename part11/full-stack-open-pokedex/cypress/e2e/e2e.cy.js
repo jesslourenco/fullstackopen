@@ -1,6 +1,6 @@
 /* eslint-disable */
 require('dotenv').config()
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 8080
 
 describe('Pokedex', function() {
   it('front page can be opened', function() {
