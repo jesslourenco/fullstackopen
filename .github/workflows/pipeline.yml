@@ -47,22 +47,22 @@ jobs:
         run: flyctl deploy --remote-only
         
 
-      - name: Success
-        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
-        if: success() && ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
-        with:
-          severity: info
-          description: 'A new version of Pokedex successfully deployed :)'
-          details: 'by @jesslourenco'
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Failure
-        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
-        if: failure() && ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
-        with:
-          severity: error
-          description: 'Build failed :('
-          details: 'broken by @jesslourenco commit ${{ github.event.commit.*.url }}'
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    #  - name: Success
+     #   uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+     #   if: success() 
+      #  with:
+       #   severity: info
+       #   description: 'A new version of Pokedex successfully deployed :)'
+       #   details: 'by @jesslourenco'
+       #   webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    #  - name: Failure
+      #  uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+      #  if: failure() 
+      #  with:
+      #    severity: error
+       #   description: 'Build failed :('
+       #   details: 'broken by @jesslourenco commit ${{ github.event.commit.*.url }}'
+       #   webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
