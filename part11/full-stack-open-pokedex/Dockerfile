@@ -26,6 +26,8 @@ FROM debian:bullseye
 
 LABEL fly_launch_runtime="nodejs"
 
+RUN docker system prune --all
+
 COPY --from=builder /root/.volta /root/.volta
 COPY --from=builder /app /app
 
