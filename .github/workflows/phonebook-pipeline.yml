@@ -14,13 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
         with:
           node-version: '18.9.1'
           
       - name: npm install
         working-directory: part11/phonebook-fullstack
-        run: npm install
+        run: ls-l && npm install
         
       - name: lint
         working-directory: part11/phonebook-fullstack
@@ -34,7 +33,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           working-directory: part11/phonebook-fullstack
-          start: npm run start
+          start: npm run start && npm test:e2e
           wait-on: http://localhost:3001
                
     
