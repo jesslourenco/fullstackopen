@@ -61,6 +61,7 @@ jobs:
           DEFAULT_BUMP: patch
           
   notification_discord:
+    needs: [simple_deployment_pipe, tag_release]
     runs-on: ubuntu-latest
     steps:
       - name: Success
