@@ -40,5 +40,6 @@ jobs:
         working-directory: part11/full-stack-open-pokedex
         run: npm run build
       - name: deploy
+        if: ${{ github.event_name == 'push' }}
         working-directory: part11/full-stack-open-pokedex
         run: flyctl deploy --remote-only
