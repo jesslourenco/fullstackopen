@@ -59,4 +59,26 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+          
+  notification_discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Success
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        if: success()
+        with:
+          severity: info
+          description: 'A new version of Pokedex successfully deployed :)'
+          details: 'by @jesslourenco'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Failure
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        if: failure()
+        with:
+          severity: error
+          description: 'Build failed :('
+          details: 'broken by @jesslourenco commit ${{ github.event.commit.*.url }}'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      
+      
       
