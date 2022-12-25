@@ -53,11 +53,9 @@ jobs:
     steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
-        with:
-          working-directory: part11/full-stack-open-pokedex
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
           DRY_RUN: true
-          
+      - run: ls -l
