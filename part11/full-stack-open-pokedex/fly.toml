@@ -36,8 +36,8 @@ processes = []
     restart_limit = 0
     timeout = "2s"
   
- # [[services.script_checks]]
-    # command = "./health_check.sh"
+ [[services.script_checks]]
+    command = "./health_check.sh"
 
   [deploy]
   release_command = "npm run build"
