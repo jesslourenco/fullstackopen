@@ -42,12 +42,12 @@ jobs:
         working-directory: part11/full-stack-open-pokedex
         run: npm run build
       - name: deploy
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
         working-directory: part11/full-stack-open-pokedex
         run: flyctl deploy --remote-only
         
   tag_release:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
     needs: [simple_deployment_pipe]
     runs-on: ubuntu-latest
     steps:
