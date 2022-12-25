@@ -18,7 +18,6 @@ jobs:
           node-version: '18.9.1'
           
       - name: npm install
-        working-directory: part11/phonebook-fullstack
         run: ls -l
         
       - name: lint
