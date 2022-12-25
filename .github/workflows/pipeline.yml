@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
       - uses: actions/setup-node@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
         with:
@@ -43,3 +45,16 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         working-directory: part11/full-stack-open-pokedex
         run: flyctl deploy --remote-only
+        
+  tag_release:
+    needs: [simple_deployment_pipe]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Bump version and push tag
+      - uses: anothrNick/github-tag-action@1.36.0
+      - env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          
