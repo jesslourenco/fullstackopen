@@ -26,7 +26,7 @@ jobs:
         working-directory: part11/phonebook-fullstack
         run: npm run lint
         
-       - name: build
+      - name: build
         working-directory: part11/phonebook-fullstack
         run: npm run build
 
