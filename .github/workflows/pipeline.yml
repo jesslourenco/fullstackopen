@@ -46,9 +46,10 @@ jobs:
         working-directory: part11/full-stack-open-pokedex
         run: flyctl deploy --remote-only
         
+
       - name: Success
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
-        if: success()
+        if: success() && ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
         with:
           severity: info
           description: 'A new version of Pokedex successfully deployed :)'
@@ -56,7 +57,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Failure
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
-        if: failure()
+        if: failure() && ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
         with:
           severity: error
           description: 'Build failed :('
