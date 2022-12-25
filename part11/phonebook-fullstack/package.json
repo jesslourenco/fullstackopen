@@ -8,7 +8,9 @@
     "dev": "nodemon index.js",
     "build-client": "react-scripts build",
     "deploy:full": "npm run build-client && fly deploy",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "cypress": "cypress open",
+    "test:e2e": "cypress run"
   },
   "engines": {
     "node": ">=18.8"
@@ -32,8 +34,10 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "cypress": "^12.2.0",
     "eslint": "^8.30.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-react": "^7.31.11",
     "nodemon": "^2.0.20"
   },
