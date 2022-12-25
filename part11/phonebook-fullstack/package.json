@@ -13,7 +13,7 @@
     "test:e2e": "cypress run"
   },
   "engines": {
-    "node": ">=18.8"
+    "node": ">=18.9"
   },
   "author": "Jess",
   "license": "ISC",
