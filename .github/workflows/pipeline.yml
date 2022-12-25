@@ -46,24 +46,6 @@ jobs:
         working-directory: part11/full-stack-open-pokedex
         run: flyctl deploy --remote-only
         
-  tag_release:
-    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
-    needs: [simple_deployment_pipe]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: '0'
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.36.0
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-          
-  notification_discord:
-    needs: [simple_deployment_pipe, tag_release]
-    runs-on: ubuntu-latest
-    steps:
       - name: Success
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         if: success()
@@ -80,6 +62,22 @@ jobs:
           description: 'Build failed :('
           details: 'broken by @jesslourenco commit ${{ github.event.commit.*.url }}'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        
+  tag_release:
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')}}
+    needs: [simple_deployment_pipe]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+      
       
       
       
