@@ -19,7 +19,7 @@ jobs:
           
       - name: npm install
         working-directory: part11/phonebook-fullstack
-        run: ls -al
+        run: npm install
         
       - name: lint
         working-directory: part11/phonebook-fullstack
