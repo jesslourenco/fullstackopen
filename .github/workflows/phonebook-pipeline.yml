@@ -44,7 +44,14 @@ jobs:
     FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
    steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18.9.1'
     - uses: superfly/flyctl-actions/setup-flyctl@master
+    
+    - name: npm install
+      working-directory: part11/phonebook-fullstack
+      run: npm install
     
     - name: deploy
       working-directory: part11/phonebook-fullstack
