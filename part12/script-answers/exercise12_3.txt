@@ -1,0 +1,51 @@
+docker start -i agitated_brattain
+root@ae88b079deae:/# cd /usr/src/app
+root@ae88b079deae:/usr/src/app# ls
+index.js
+root@ae88b079deae:/usr/src/app# vim index.js
+bash: vim: command not found
+root@ae88b079deae:/usr/src/app# cd ../../..
+root@ae88b079deae:/# apt-get update
+Get:1 http://ports.ubuntu.com/ubuntu-ports jammy InRelease [270 kB]
+Get:2 http://ports.ubuntu.com/ubuntu-ports jammy-updates InRelease [114 kB]
+Get:3 http://ports.ubuntu.com/ubuntu-ports jammy-backports InRelease [99.8 kB]
+Get:4 http://ports.ubuntu.com/ubuntu-ports jammy-security InRelease [110 kB]
+Get:5 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 Packages [17.2 MB]
+Get:6 http://ports.ubuntu.com/ubuntu-ports jammy/restricted arm64 Packages [24.2 kB]
+Get:7 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 Packages [1758 kB]
+Get:8 http://ports.ubuntu.com/ubuntu-ports jammy/multiverse arm64 Packages [224 kB]
+Get:9 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 Packages [889 kB]
+Get:10 http://ports.ubuntu.com/ubuntu-ports jammy-updates/multiverse arm64 Packages [2315 B]
+Get:11 http://ports.ubuntu.com/ubuntu-ports jammy-updates/universe arm64 Packages [837 kB]
+Get:12 http://ports.ubuntu.com/ubuntu-ports jammy-updates/restricted arm64 Packages [256 kB]
+Get:13 http://ports.ubuntu.com/ubuntu-ports jammy-backports/universe arm64 Packages [7269 B]
+Get:14 http://ports.ubuntu.com/ubuntu-ports jammy-backports/main arm64 Packages [3511 B]
+Get:15 http://ports.ubuntu.com/ubuntu-ports jammy-security/main arm64 Packages [592 kB]
+Get:16 http://ports.ubuntu.com/ubuntu-ports jammy-security/universe arm64 Packages [646 kB]
+Get:17 http://ports.ubuntu.com/ubuntu-ports jammy-security/restricted arm64 Packages [243 kB]
+Fetched 23.3 MB in 3s (7991 kB/s)                        
+Reading package lists... Done
+root@ae88b079deae:/# apt-get -y install nano
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Suggested packages:
+  hunspell
+The following NEW packages will be installed:
+  nano
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 277 kB of archives.
+After this operation, 872 kB of additional disk space will be used.
+Get:1 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 nano arm64 6.2-1 [277 kB]
+Fetched 277 kB in 1s (406 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package nano.
+(Reading database ... 4389 files and directories currently installed.)
+Preparing to unpack .../archives/nano_6.2-1_arm64.deb ...
+Unpacking nano (6.2-1) ...
+Setting up nano (6.2-1) ...
+update-alternatives: using /bin/nano to provide /usr/bin/editor (editor) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/editor.1.gz because associated file /usr/share/man/man1/nano.1.gz (of link group editor) doesn't exist
+update-alternatives: using /bin/nano to provide /usr/bin/pico (pico) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/pico.1.gz because associated file /usr/share/man/man1/nano.1.gz (of link group pico) doesn't exist
+root@ae88b079deae:/# nano /usr/src/app/index.js
