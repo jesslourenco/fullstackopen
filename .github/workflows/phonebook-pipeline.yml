@@ -27,7 +27,7 @@ jobs:
         
       - name: build
         working-directory: part11/phonebook-fullstack
-        run: npm run build
+        run: npm run build-client
 
       - name: e2e test
         uses: cypress-io/github-action@v4
