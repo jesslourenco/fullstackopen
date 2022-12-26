@@ -6,7 +6,6 @@ on:
       - main
       
 env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
 jobs:
@@ -36,5 +35,17 @@ jobs:
           working-directory: part11/phonebook-fullstack
           start: npm run start && npm test:e2e
           wait-on: http://localhost:3001
-               
+          
+  Fly-deploy:
+   needs: [set-up]
+   runs-on: ubuntu-latest
+   if: ${{ github.event_name == 'push' }}
+   env:
+    FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+   steps:
+    - uses: actions/checkout@v3
+    - uses: superfly/flyctl-actions/setup-flyctl@master
+      with:
+        working-directory: part11/phonebook-fullstack
+        run: flyctl deploy --remote-only
     
