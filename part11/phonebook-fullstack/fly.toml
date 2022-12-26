@@ -45,4 +45,4 @@ processes = []
   release_command = "npm run build-client"
 
 [processes]
-  app = "node index.js"
+  app = "node app.js"

@@ -4,8 +4,8 @@
   "description": "",
   "main": "build/index.html",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "build-client": "react-scripts build",
     "deploy:full": "npm run build-client && fly deploy",
     "lint": "eslint .",
