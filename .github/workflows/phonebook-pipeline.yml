@@ -33,7 +33,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           working-directory: part11/phonebook-fullstack
-          start: npm run start && npm test:e2e
+          start: npm start && npm test:e2e
           wait-on: http://localhost:3001
           
   Fly-deploy:
@@ -48,5 +48,5 @@ jobs:
     
     - name: deploy
       working-directory: part11/phonebook-fullstack
-      run: flyctl deploy --remote-only
+      run: npm run deploy:full
     
