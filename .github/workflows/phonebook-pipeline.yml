@@ -55,5 +55,5 @@ jobs:
     
     - name: deploy
       working-directory: part11/phonebook-fullstack
-      run: npm run deploy:full
+      run: npm run build-client && flyctl deploy --remote-only
     
