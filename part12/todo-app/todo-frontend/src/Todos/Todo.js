@@ -1,26 +1,35 @@
-import {useParams} from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
-import axios from '../util/apiClient'
 
-const Todo = () => {
-    const [todo, setTodo] = useState([])
-    const {id} = useParams()
-    
-    useEffect(() => {
-        const getTodo = async() => {
-            const { data } = await axios.get(`/todos/${id}`)
-            setTodo(data);
-        }
-        getTodo()
-      }, [id])
 
-    return(
-        <div>
-            Task: {todo.text} <br/>
-            Status: {todo.done? 'done' : 'not done'} <br/>
-            Id: {todo._id} <br/>
+const Todo = ({onClickComplete, onClickDelete, todo}) => {
+    const doneInfo = (
+        <>
+          <span>This todo is done</span>
+          <span>
+            <button onClick={onClickDelete(todo)}> Delete </button>
+          </span>
+        </>
+      )
+
+      const notDoneInfo = (
+        <>
+          <span>
+            This todo is not done
+          </span>
+          <span>
+            <button onClick={onClickDelete(todo)}> Delete </button>
+            <button onClick={onClickComplete(todo)}> Set as done </button>
+          </span>
+        </>
+      )
+
+      return (
+        <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '70%', margin: 'auto' }}>
+          <span>
+          {todo.text}
+          </span>
+          {todo.done ? doneInfo : notDoneInfo}
         </div>
-    )
+      )
 }
 
 export default Todo

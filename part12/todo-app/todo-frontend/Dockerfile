@@ -7,6 +7,7 @@ RUN npm install
 
 ENV REACT_APP_BACKEND_URL="http://localhost:3000"
 
+RUN CI=true npm test
 RUN npm run build
 
 # This is a new stage, everything before this is gone, except the files we want to COPY
