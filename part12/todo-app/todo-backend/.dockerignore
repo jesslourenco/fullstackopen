@@ -2,3 +2,6 @@
 .gitignore
 node_modules
 Dockerfile
+dev.Dockerfile
+mongo/mongo_data
+redis/redis_data
