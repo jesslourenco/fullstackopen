@@ -1,0 +1,42 @@
+services:
+  app:
+    image: blog-front-dev-img
+    environment:
+      WDS_SOCKET_PORT: "3000"
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - 4001:3000 # localhost:container
+    container_name: front-dev-cont
+
+  server:
+    image: blog-backend-dev-img
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    environment:
+      SECRET: "${SECRET}"
+      MONGODB_URI: "${MONGODB_URI}"
+      TEST_MONGODB_URI: "${TEST_MONGODB_URI}"
+      PORT: "${PORT}"
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules/bcrypt
+    ports:
+      - 4002:3000
+    container_name: blog-backend-dev
+
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80
+    depends_on:
+      - app 
+      - server
+    container_name: reverse-proxy-blog
