@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { User, Blog, ReadingList } = require('../models')
-require('express-async-errors');
+const { tokenExtractor } = require('../util/middleware')
 
 router.post('/', async (req, res) => {
     try{
@@ -15,4 +15,21 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.put('/:id', tokenExtractor, async (req, res) => {
+    
+    try{
+    const readEntry = await ReadingList.findByPk( req.params.id )
+
+    const user = await User.findByPk(req.decodedToken.id)
+    if (user.id !== readEntry.userId) return res.status(403).json('user does not match that reading list')
+
+    await readEntry.update({read: true})
+
+    return res.status(200).end()
+
+    } catch (err) {
+        console.log(err)
+        return res.status(400).end()
+    }
+})
 module.exports = router
