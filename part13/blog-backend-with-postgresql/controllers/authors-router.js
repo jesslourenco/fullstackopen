@@ -10,7 +10,8 @@ router.get('/', async (req, res) => {
             [fn('COUNT', col('title')), 'articles'],
             [fn('SUM', col('likes')), 'likes']
         ],
-        group: ['author']
+        group: ['author'],
+        order: [['likes', 'DESC']]
     })
 
     return res.json(posts)

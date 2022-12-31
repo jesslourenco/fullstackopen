@@ -6,6 +6,7 @@
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.8.0",
     "sequelize": "^6.28.0",
+    "umzug": "^3.2.1",
     "validator": "^13.7.0"
   },
   "name": "blog-backend-with-postgresql",

@@ -6,8 +6,9 @@ const User = require('./user')
 User.hasMany(Blog)
 Blog.belongsTo(User)
 
-Blog.sync({ alter: true }) // alters the db table if necessary to match model
-User.sync({ alter: true })
+/* may use this instead of migrations to keep tables synced with models and up-to-date to any changes made
+Blog.sync({ alter: true }) 
+User.sync({ alter: true }) */
 
 module.exports = {
   Blog, User
