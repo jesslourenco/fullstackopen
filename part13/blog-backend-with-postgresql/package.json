@@ -5,7 +5,8 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.28.0"
+    "sequelize": "^6.28.0",
+    "validator": "^13.7.0"
   },
   "name": "blog-backend-with-postgresql",
   "version": "1.0.0",
