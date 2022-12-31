@@ -23,8 +23,8 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },
-      createdAt: DataTypes.DATE, // must add timestamp fields in migration manually
-      updatedAt: DataTypes.DATE
+      created_at: {type: DataTypes.DATE },
+      updated_at: {type: DataTypes.DATE}    
     })
     await queryInterface.createTable('users', {
       id: {
@@ -44,8 +44,8 @@ module.exports = {
             isEmail: true
         }
       },
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE
+      created_at: {type: DataTypes.DATE },
+      updated_at: {type: DataTypes.DATE}
     })
     await queryInterface.addColumn('blogs', 'user_id', { // use snake case for foreign keys in migrations
       type: DataTypes.INTEGER,
@@ -55,7 +55,7 @@ module.exports = {
 
     await queryInterface.addColumn('users', 'post_id', { 
         type: [DataTypes.INTEGER],
-        allowNull: false,
+        allowNull: true,
         references: { model: 'users', key: 'id' },
       })
   },

@@ -3,6 +3,13 @@ const router = require('express').Router()
 const { SECRET } = require('../util/config')
 const User = require('../models/user')
 
+const error = (err, req, res, next) => {
+    // This is a custom middleware!
+    console.log(err)
+        res.status(400)
+        next()
+}
+
 router.post('/', async (request, response) => {
     const body = request.body
 
@@ -31,5 +38,7 @@ router.post('/', async (request, response) => {
         .status(200)
         .json({ token, username: user.username, name: user.name })
 })
+
+router.use(error)
 
 module.exports = router

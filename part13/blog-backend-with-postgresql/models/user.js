@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../util/db')
 
-class User extends Model {}
+class User extends Model { }
 
 User.init({
   id: {
@@ -14,7 +14,7 @@ User.init({
     unique: true,
     allowNull: false,
     validate: {
-        isEmail: true
+      isEmail: true
     }
   },
   name: {
