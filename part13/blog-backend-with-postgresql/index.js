@@ -7,11 +7,13 @@ const { connectToDatabase } = require('./util/db')
 const postsRouter = require('./controllers/posts-router')
 const usersRouter = require('./controllers/users-router')
 const loginRouter = require('./controllers/login-router')
+const authorsRouter = require('./controllers/authors-router')
 
 app.use(express.json())
 app.use('/api/posts', postsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/authors', authorsRouter)
 
 const start = async () => {
   await connectToDatabase()
