@@ -47,8 +47,9 @@ router.get('/:id', postFinder, async (req, res) => {
     }
 })
 
-router.delete('/:id', postFinder, async (req, res) => {
-    if (req.post) {
+router.delete('/:id', postFinder, tokenExtractor, async (req, res) => {
+    const user = await User.findByPk(req.decodedToken.id)
+    if (req.post.userId === user.id) {
         await req.post.destroy()
     }
     res.status(204).end()
