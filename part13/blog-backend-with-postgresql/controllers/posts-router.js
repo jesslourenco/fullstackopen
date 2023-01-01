@@ -2,7 +2,7 @@ const router = require('express').Router()
 const { Op } = require('sequelize')
 require('express-async-errors');
 const { Blog, User } = require('../models')
-const { tokenExtractor } = require('../util/middleware')
+const { tokenExtractor, validateSession } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
     let where = {}
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
     res.json(posts)
 })
 
-router.post('/', tokenExtractor, async (req, res) => {
+router.post('/', tokenExtractor, validateSession, async (req, res) => {
     const user = await User.findByPk(req.decodedToken.id)
     const post = await Blog.create({...req.body, userId: user.id})
     return (
@@ -51,7 +51,7 @@ router.get('/:id', postFinder, async (req, res) => {
     }
 })
 
-router.delete('/:id', postFinder, tokenExtractor, async (req, res) => {
+router.delete('/:id', postFinder, tokenExtractor, validateSession, async (req, res) => {
     const user = await User.findByPk(req.decodedToken.id)
     if (req.post.userId === user.id) {
         await req.post.destroy()
