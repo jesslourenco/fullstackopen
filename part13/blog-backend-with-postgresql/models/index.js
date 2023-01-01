@@ -2,15 +2,15 @@
 const Blog = require('./blog')
 const User = require('./user')
 const ReadingList = require('./readinglist')
-const Session = require('./session')
+const ActiveSession = require('./session')
 
 // properties define o2m relationship
 User.hasMany(Blog)
 Blog.belongsTo(User)
 
 // properties define o2o relationship
-User.hasOne(Session)
-Session.belongsTo(User)
+User.hasOne(ActiveSession)
+ActiveSession.belongsTo(User)
 
 // properties define m2m relationship
 User.belongsToMany(Blog, {through: ReadingList, as: 'reading'})
@@ -21,5 +21,5 @@ Blog.sync({ alter: true })
 User.sync({ alter: true }) */
 
 module.exports = {
-  Blog, User, ReadingList
+  Blog, User, ReadingList, ActiveSession
 }

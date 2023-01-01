@@ -74,6 +74,17 @@ router.put('/:username', async (req, res) => {
     }
 })
 
+router.put('/:id/active', async (req, res) => {
+    const user = await User.findByPk(req.params.id)
+
+    if (user) {
+        await user.update({ active: !(user.active) })
+        res.status(200).end()
+    } else {
+        res.status(404).end()
+    }
+})
+
 router.use(error)
 
 module.exports = router

@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../util/db')
 
-class Session extends Model { }
+class ActiveSession extends Model { }
 
-Session.init({
+ActiveSession.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -22,7 +22,7 @@ Session.init({
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'session'
+  modelName: 'activeSession'
 })
 
-module.exports = Session
+module.exports = ActiveSession
