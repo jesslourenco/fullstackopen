@@ -56,7 +56,7 @@ https://fullstackopen.com/en/about/
   - Communicating with server in a redux application
   - Connect
 
-### :white_check_mark: Part 7: React router, custom hooks, styling app with CSS and webpack
+### :white_check_mark: [Part 7: React router, custom hooks, styling app with CSS and webpack](https://github.com/jesslourenco/fullstackopen/tree/main/part7)
   - React-router
   - Custom hooks
   - More about styles
