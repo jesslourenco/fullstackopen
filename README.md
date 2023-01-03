@@ -64,7 +64,7 @@ https://fullstackopen.com/en/about/
   - Class components, Misc
   - Extending the bloglist
 
-### :white_check_mark: Part 8: GraphQL
+### :white_check_mark: [Part 8: GraphQL](https://github.com/jesslourenco/fullstackopen/tree/main/part8)
   - GraphQL-server
   - React and GraphQL
   - Database and user administration
