@@ -71,7 +71,7 @@ https://fullstackopen.com/en/about/
   - Login and updating the cache
   - Fragments and subscriptions
 
-### :white_check_mark: Part 9: Typescript
+### :white_check_mark: Part 9: [Typescript](https://github.com/jesslourenco/fullstackopen/tree/main/part9)
   - Background and Introduction
   - First Steps with Typescript
   - Typing express app
