@@ -83,7 +83,7 @@ https://fullstackopen.com/en/about/
   - Communicating with server
   - Testing and extending our application
   
-### :pencil2: Part 11: CI/CD
+### :pencil2: [Part 11: CI/CD](https://github.com/jesslourenco/fullstackopen/tree/main/part11)
   - Introduction to CI/CD
   - Getting started with Github actions
   - Deployment
