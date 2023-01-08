@@ -90,7 +90,7 @@ https://fullstackopen.com/en/about/
   - Keeping green
   - Expanding further
 
-### Part 12: Containers
+### [Part 12: Containers](https://github.com/jesslourenco/fullstackopen/tree/main/part12)
   - Introduction to containers
   - Building and configuring environments
   - Basics of Orchestration
