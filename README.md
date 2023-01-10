@@ -95,7 +95,7 @@ https://fullstackopen.com/en/about/
   - Building and configuring environments
   - Basics of Orchestration
 
-### Part 13: Using relational databases
+### :white_check_mark: [Part 13: Using relational databases](https://github.com/jesslourenco/fullstackopen/tree/main/part3/phonebook-backend)
   - Using relational databases with Sequelize
   - Join tables and queries
   - Migrations, many-to-many relationships
