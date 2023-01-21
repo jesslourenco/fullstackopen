@@ -2,9 +2,9 @@
 
 # Full Stack Open
 
-9/14 parts completed
+13/14 parts completed
 
-![64%](https://progress-bar.dev/64/?title=progress&width=500)
+![93%](https://progress-bar.dev/93/?title=progress&width=500)
 
 ## Abstract
 This repo serves as an exercise submission for the "Full Stack Open" course offered by the Univeristy of Helsinki. 
@@ -71,7 +71,7 @@ https://fullstackopen.com/en/about/
   - Login and updating the cache
   - Fragments and subscriptions
 
-### :white_check_mark: Part 9: Typescript
+### :white_check_mark: [Part 9: Typescript](https://github.com/jesslourenco/fullstackopen/tree/main/part9)
   - Background and Introduction
   - First Steps with Typescript
   - Typing express app
@@ -83,19 +83,19 @@ https://fullstackopen.com/en/about/
   - Communicating with server
   - Testing and extending our application
   
-### :pencil2: Part 11: CI/CD
+### :white_check_mark: [Part 11: CI/CD](https://github.com/jesslourenco/fullstackopen/tree/main/part11)
   - Introduction to CI/CD
   - Getting started with Github actions
   - Deployment
   - Keeping green
   - Expanding further
 
-### Part 12: Containers
+### :white_check_mark: [Part 12: Containers](https://github.com/jesslourenco/fullstackopen/tree/main/part12)
   - Introduction to containers
   - Building and configuring environments
   - Basics of Orchestration
 
-### Part 13: Using relational databases
+### :white_check_mark: [Part 13: Using relational databases](https://github.com/jesslourenco/fullstackopen/tree/main/part3/phonebook-backend)
   - Using relational databases with Sequelize
   - Join tables and queries
   - Migrations, many-to-many relationships
